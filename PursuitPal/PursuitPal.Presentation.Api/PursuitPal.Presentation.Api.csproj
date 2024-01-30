@@ -15,4 +15,9 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PursuitPal.Core\PursuitPal.Core.csproj" />
+    <ProjectReference Include="..\PursuitPal.Services\PursuitPal.Services.csproj" />
+  </ItemGroup>
+
 </Project>
