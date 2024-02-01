@@ -3,9 +3,12 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PursuitPal.Core.Repositories;
+using PursuitPal.Core.Services;
 using PursuitPal.Infrastructure;
+using PursuitPal.Infrastructure.Entities;
 using PursuitPal.Infrastructure.Repositories;
 using PursuitPal.Presentation.Api.Validators;
+using PursuitPal.Services;
 
 namespace PursuitPal.Presentation.Api.Extensions
 {
@@ -32,6 +35,12 @@ namespace PursuitPal.Presentation.Api.Extensions
         public static void AddRepositoriesConfiguration(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        }
+
+        /// <summary>Configure dependency injection for Services.</summary>
+        public static void AddServicesConfiguration(this IServiceCollection services)
+        {
+            services.AddScoped<IUsersService, UsersService>();
         }
 
         public static void AddPursuitPalApIVersioning(this IServiceCollection services)

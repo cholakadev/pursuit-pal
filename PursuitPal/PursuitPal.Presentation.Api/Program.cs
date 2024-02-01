@@ -10,6 +10,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddPursuitPalApIVersioning();
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddRepositoriesConfiguration();
+builder.Services.AddServicesConfiguration();
 builder.Services.AddValidatorsConfiguration();
 
 var app = builder.Build();
