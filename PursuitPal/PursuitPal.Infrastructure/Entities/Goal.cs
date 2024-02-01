@@ -16,6 +16,8 @@ namespace PursuitPal.Infrastructure.Entities
 
         public GoalDetails Details { get; set; }
 
+        public User User { get; set; }
+
         public IEnumerable<GoalFeedback> Feedbacks { get; set; }
     }
 }

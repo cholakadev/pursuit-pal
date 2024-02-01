@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PursuitPal.Core.Helpers;
 using PursuitPal.Infrastructure.Entities;
 
 namespace PursuitPal.Infrastructure.Configurations
@@ -11,7 +10,9 @@ namespace PursuitPal.Infrastructure.Configurations
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Feedback).IsRequired().HasMaxLength(1000);
-            builder.HasOne(x => x.Goal);
+            builder.HasOne(x => x.Goal)
+                .WithMany(x => x.Feedbacks)
+                .HasForeignKey(x => x.GoalId);
         }
     }
 }
