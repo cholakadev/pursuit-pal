@@ -7,6 +7,11 @@ namespace PursuitPal.Infrastructure
 {
     public class PursuitPalDbContext : DbContext
     {
+        public PursuitPalDbContext(DbContextOptions<PursuitPalDbContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<Goal> Goals { get; set; }

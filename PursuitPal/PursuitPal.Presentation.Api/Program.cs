@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using PursuitPal.Infrastructure;
+using PursuitPal.Presentation.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,8 @@ builder.Services.AddVersionedApiExplorer(
         options.GroupNameFormat = "'v'VVV";
         options.SubstituteApiVersionInUrl = true;
     });
+
+builder.Services.AddDatabase(builder.Configuration);
 
 var app = builder.Build();
 
