@@ -10,6 +10,7 @@ namespace PursuitPal.Infrastructure.Configurations
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Feedback).IsRequired().HasMaxLength(1000);
+            builder.Property(x => x.Active).HasDefaultValue(true);
             builder.HasOne(x => x.Goal)
                 .WithMany(x => x.Feedbacks)
                 .HasForeignKey(x => x.GoalId);

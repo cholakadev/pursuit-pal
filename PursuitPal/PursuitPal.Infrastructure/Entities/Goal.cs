@@ -2,7 +2,7 @@
 
 namespace PursuitPal.Infrastructure.Entities
 {
-    public class Goal : Auditable
+    public class Goal : Auditable, IActivatable
     {
         public Guid Id { get; set; }
 
@@ -13,6 +13,8 @@ namespace PursuitPal.Infrastructure.Entities
         public DateTime ToDate { get; set; }
 
         public GoalStatus Status { get; set; }
+
+        public bool Active { get; set; }
 
         public GoalDetails Details { get; set; }
 

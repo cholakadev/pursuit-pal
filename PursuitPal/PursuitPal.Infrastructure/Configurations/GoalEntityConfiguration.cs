@@ -13,6 +13,7 @@ namespace PursuitPal.Infrastructure.Configurations
             builder.Property(x => x.FromDate).IsRequired();
             builder.Property(x => x.ToDate).IsRequired();
             builder.Property(x => x.Status).HasDefaultValue(GoalStatus.Active);
+            builder.Property(x => x.Active).HasDefaultValue(true);
             builder.HasOne(x => x.User);
             builder.HasOne(x => x.Details);
             builder.HasMany(x => x.Feedbacks)

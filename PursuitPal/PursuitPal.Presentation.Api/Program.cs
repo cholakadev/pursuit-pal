@@ -9,20 +9,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-builder.Services.AddApiVersioning(
-    options =>
-    {
-        options.ReportApiVersions = true;
-        options.DefaultApiVersion = new ApiVersion(1, 0);
-    });
-builder.Services.AddVersionedApiExplorer(
-    options =>
-    {
-        options.GroupNameFormat = "'v'VVV";
-        options.SubstituteApiVersionInUrl = true;
-    });
-
+builder.Services.AddPursuitPalApIVersioning();
 builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddRepositoriesConfiguration();
 
 var app = builder.Build();
 
