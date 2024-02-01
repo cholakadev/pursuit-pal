@@ -11,5 +11,7 @@
         public string Description { get; set; }
 
         public string CompletionCriteria { get; set; }
+
+        public Goal Goal { get; set; }
     }
 }

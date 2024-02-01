@@ -7,5 +7,7 @@
         public Guid GoalId { get; set; }
 
         public string Feedback { get; set; }
+
+        public Goal Goal { get; set; }
     }
 }
