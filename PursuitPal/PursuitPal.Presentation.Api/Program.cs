@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using PursuitPal.Infrastructure;
 using PursuitPal.Presentation.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +10,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddPursuitPalApIVersioning();
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddRepositoriesConfiguration();
+builder.Services.AddValidatorsConfiguration();
 
 var app = builder.Build();
 

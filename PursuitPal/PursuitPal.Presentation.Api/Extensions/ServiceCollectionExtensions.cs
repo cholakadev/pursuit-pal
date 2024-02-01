@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PursuitPal.Core.Repositories;
 using PursuitPal.Infrastructure;
 using PursuitPal.Infrastructure.Repositories;
+using PursuitPal.Presentation.Api.Validators;
 
 namespace PursuitPal.Presentation.Api.Extensions
 {
@@ -45,6 +48,21 @@ namespace PursuitPal.Presentation.Api.Extensions
                     options.GroupNameFormat = "'v'VVV";
                     options.SubstituteApiVersionInUrl = true;
                 });
+        }
+
+        public static void AddValidatorsConfiguration(this IServiceCollection services)
+        {
+            ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+
+            ValidatorOptions.Global.DisplayNameResolver = (_, member, _)
+                => member != null ? member.Name.Replace(" ", string.Empty) : null;
+
+            services.AddFluentValidationAutoValidation(options =>
+            {
+                options.DisableDataAnnotationsValidation = true;
+            });
+
+            services.AddValidatorsFromAssemblyContaining<BaseValidator<object>>();
         }
     }
 }

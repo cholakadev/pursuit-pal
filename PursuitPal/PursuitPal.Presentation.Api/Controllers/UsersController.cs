@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PursuitPal.Core.Requests;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {
@@ -10,7 +11,7 @@ namespace PursuitPal.Presentation.Api.Controllers
     {
 
         [HttpPost(nameof(Register))]
-        public async Task<IActionResult> Register([FromBody] object userData)
+        public async Task<IActionResult> Register([FromBody] CreateUpdateUserRequest request)
         {
             throw new NotImplementedException();
         }
