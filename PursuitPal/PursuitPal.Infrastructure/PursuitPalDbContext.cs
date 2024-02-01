@@ -33,7 +33,7 @@ namespace PursuitPal.Infrastructure
             foreach (var entry in addedEntities)
             {
                 entry.CurrentValues[nameof(Auditable.CreatedAt)] = DateTime.Now;
-                entry.CurrentValues[nameof(Auditable.UpdatedBy)] = Guid.NewGuid();
+                entry.CurrentValues[nameof(Auditable.CreatedBy)] = Guid.NewGuid();
             }
 
             foreach (var entry in modifiedEntities)
