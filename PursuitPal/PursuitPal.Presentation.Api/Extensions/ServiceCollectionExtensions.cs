@@ -43,6 +43,7 @@ namespace PursuitPal.Presentation.Api.Extensions
         /// <summary>Configure dependency injection for Services.</summary>
         public static void AddServicesConfiguration(this IServiceCollection services)
         {
+            services.AddScoped<IUsersContextService, UsersContextService>();
             services.AddScoped<IUsersService, UsersService>();
         }
 
