@@ -1,4 +1,4 @@
-﻿using PursuitPal.Core.Exceptions;
+﻿using PursuitPal.Core.Exceptions.OperationExceptions;
 using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Repositories;
 using PursuitPal.Core.Requests;

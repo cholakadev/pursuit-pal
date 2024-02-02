@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace PursuitPal.Core.Exceptions
+namespace PursuitPal.Core.Exceptions.OperationExceptions
 {
     public class FailedCreationException : BaseException
     {
