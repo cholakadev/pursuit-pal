@@ -10,6 +10,8 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddPursuitPalApIVersioning();
 builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddAuthentication(builder.Configuration);
+builder.Services.AddAuthorization();
 builder.Services.AddRepositoriesConfiguration();
 builder.Services.AddServicesConfiguration();
 builder.Services.AddValidatorsConfiguration();
@@ -22,10 +24,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<AccessTokenMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

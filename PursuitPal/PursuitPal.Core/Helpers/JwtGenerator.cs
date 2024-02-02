@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using PursuitPal.Core.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace PursuitPal.Core.Helpers
 {
@@ -25,17 +26,21 @@ namespace PursuitPal.Core.Helpers
                 new Claim("LName", user.LastName),
             };
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetSection("Secrets:JWT_Secret").Value));
 
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
-                signingCredentials: cred);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var issuer = _configuration.GetSection("Secrets:Issuer").Value;
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
+            var Sectoken = new JwtSecurityToken(issuer,
+                issuer,
+                claims,
+                expires: DateTime.Now.AddMinutes(120),
+                signingCredentials: credentials);
+
+            var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+
+            return token;
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PursuitPal.Core.Repositories;
 using PursuitPal.Core.Services;
@@ -12,6 +15,7 @@ using PursuitPal.Presentation.Api.Interceptors;
 using PursuitPal.Presentation.Api.Validators;
 using PursuitPal.Services;
 using System.Reflection;
+using System.Text;
 
 namespace PursuitPal.Presentation.Api.Extensions
 {
@@ -43,6 +47,7 @@ namespace PursuitPal.Presentation.Api.Extensions
         /// <summary>Configure dependency injection for Services.</summary>
         public static void AddServicesConfiguration(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddScoped<IUsersContextService, UsersContextService>();
             services.AddScoped<IUsersService, UsersService>();
         }
@@ -91,8 +96,9 @@ namespace PursuitPal.Presentation.Api.Extensions
                     Name = "Authorization",
                     Description = "Enter the generated user token.",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -100,8 +106,6 @@ namespace PursuitPal.Presentation.Api.Extensions
                     {
                         new OpenApiSecurityScheme
                         {
-                            Name = "Bearer",
-                            In = ParameterLocation.Header,
                             Reference = new OpenApiReference
                             {
                                 Id = "Bearer",
@@ -118,6 +122,27 @@ namespace PursuitPal.Presentation.Api.Extensions
 
                 options.IncludeXmlComments(xmlPath);
             });
+        }
+
+        public static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            var jwtKey = configuration.GetSection("Secrets:JWT_Secret").Value;
+            var jwtIssuer = configuration.GetSection("Secrets:Issuer").Value;
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+             .AddJwtBearer(options =>
+             {
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = jwtIssuer,
+                     ValidAudience = jwtIssuer,
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                 };
+             });
         }
     }
 }
