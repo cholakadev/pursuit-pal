@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PursuitPal.Core.Extensions;
+using PursuitPal.Core.Helpers;
+using PursuitPal.Core.Services;
 using PursuitPal.Infrastructure.Configurations;
 using PursuitPal.Infrastructure.Entities;
 
@@ -7,9 +9,14 @@ namespace PursuitPal.Infrastructure
 {
     public class PursuitPalDbContext : DbContext
     {
-        public PursuitPalDbContext(DbContextOptions<PursuitPalDbContext> options)
+        private readonly IUsersContextService _usersContext;
+
+        public PursuitPalDbContext(
+            DbContextOptions<PursuitPalDbContext> options,
+            IUsersContextService usersContext)
             : base(options)
         {
+            _usersContext = usersContext ?? throw new ArgumentNullException(nameof(usersContext));
         }
 
         public DbSet<User> Users { get; set; }
@@ -24,7 +31,6 @@ namespace PursuitPal.Infrastructure
             modelBuilder.ApplyConfiguration(new GoalFeedbackEntityConfiguration());
         }
 
-        // TODO: Get the actual user ID from the http context
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var addedEntities = ChangeTracker.Entries<Auditable>().Where(x => x.IsAdded());
@@ -33,13 +39,17 @@ namespace PursuitPal.Infrastructure
             foreach (var entry in addedEntities)
             {
                 entry.CurrentValues[nameof(Auditable.CreatedAt)] = DateTime.Now;
-                entry.CurrentValues[nameof(Auditable.CreatedBy)] = Guid.NewGuid();
+                entry.CurrentValues[nameof(Auditable.CreatedBy)] = _usersContext.UserId == Guid.Empty
+                    ? new Guid(ApplicationConstants.SystemGuid)
+                    : _usersContext.UserId;
             }
 
             foreach (var entry in modifiedEntities)
             {
                 entry.CurrentValues[nameof(Auditable.UpdatedAt)] = DateTime.Now;
-                entry.CurrentValues[nameof(Auditable.UpdatedBy)] = Guid.NewGuid();
+                entry.CurrentValues[nameof(Auditable.UpdatedBy)] = _usersContext.UserId == Guid.Empty
+                    ? new Guid(ApplicationConstants.SystemGuid)
+                    : _usersContext.UserId;
             }
 
             return await base.SaveChangesAsync(cancellationToken);
