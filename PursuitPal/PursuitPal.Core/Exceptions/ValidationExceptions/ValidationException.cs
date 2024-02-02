@@ -1,8 +1,8 @@
 ﻿namespace PursuitPal.Core.Exceptions.ValidationExceptions
 {
-    public abstract class ValidationException : BaseException
+    public class ValidationException : BaseException
     {
-        protected ValidationException(string message)
+        public ValidationException(string message)
             : base(message)
         {
         }

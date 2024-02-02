@@ -7,6 +7,7 @@ using PursuitPal.Core.Services;
 using PursuitPal.Infrastructure;
 using PursuitPal.Infrastructure.Entities;
 using PursuitPal.Infrastructure.Repositories;
+using PursuitPal.Presentation.Api.Interceptors;
 using PursuitPal.Presentation.Api.Validators;
 using PursuitPal.Services;
 
@@ -72,6 +73,8 @@ namespace PursuitPal.Presentation.Api.Extensions
             });
 
             services.AddValidatorsFromAssemblyContaining<BaseValidator<object>>();
+
+            services.AddTransient<IValidatorInterceptor, ValidatorInterceptor>();
         }
     }
 }
