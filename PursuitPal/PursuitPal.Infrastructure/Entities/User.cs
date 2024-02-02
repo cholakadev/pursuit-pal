@@ -12,6 +12,8 @@
 
         public string Password { get; set; }
 
+        public string Salt { get; set; }
+
         public bool Active { get; set; }
 
         public IEnumerable<Goal> Goals { get; set; }

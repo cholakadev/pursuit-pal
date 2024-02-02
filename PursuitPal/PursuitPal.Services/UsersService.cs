@@ -1,4 +1,6 @@
-﻿using PursuitPal.Core.Repositories;
+﻿using PursuitPal.Core.Exceptions;
+using PursuitPal.Core.Helpers;
+using PursuitPal.Core.Repositories;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Services;
 using PursuitPal.Infrastructure.Entities;
@@ -17,8 +19,20 @@ namespace PursuitPal.Services
 
         public async Task<Guid> RegisterUserAsync(CreateUpdateUserRequest request)
         {
-            var user = await _usersRepository.AddAsync(request.ToEntity());
-            return user.Id;
+            var purshutPalHash = new PursuitPalHash();
+            var passwordHash = purshutPalHash.HashPasword(request.Password, out var salt);
+            var hexStringSalt = Convert.ToHexString(salt);
+
+            var userToCreate = request.ToEntity(passwordHash, hexStringSalt);
+
+            var createdUser = await _usersRepository.AddAsync(userToCreate);
+
+            if (createdUser is null)
+            {
+                throw new FailedCreationException(nameof(RegisterUserAsync));
+            }
+
+            return createdUser.Id;
         }
     }
 }

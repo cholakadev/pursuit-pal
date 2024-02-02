@@ -13,6 +13,7 @@ namespace PursuitPal.Infrastructure.Configurations
             builder.Property(x => x.LastName).IsRequired().HasMaxLength(30);
             builder.Property(x => x.Email).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Password).IsRequired().HasMaxLength(200);
+            builder.Property(x => x.Salt).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Active).HasDefaultValue(true);
             builder.HasMany(x => x.Goals)
                 .WithOne(x => x.User)

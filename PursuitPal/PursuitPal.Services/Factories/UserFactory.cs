@@ -5,13 +5,17 @@ namespace PursuitPal.Services.Factories
 {
     public static class UserFactory
     {
-        public static User ToEntity(this CreateUpdateUserRequest request)
+        public static User ToEntity(
+            this CreateUpdateUserRequest request,
+            string? password,
+            string? salt)
             => new User
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
-                Password = request.Password,
+                Password = password ?? throw new ArgumentNullException(nameof(password)),
+                Salt = salt ?? throw new ArgumentNullException(nameof(salt)),
             };
     }
 }
