@@ -23,9 +23,7 @@ namespace PursuitPal.Presentation.Api.Controllers
             => Ok(await _usersService.RegisterUserAsync(request));
 
         [HttpPost(nameof(Login))]
-        public async Task<IActionResult> Login([FromBody] object userData)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IActionResult> Login([FromBody] GenerateUserTokenRequest request)
+            => Ok(await _usersService.GenerateUserTokenAsync(request));
     }
 }

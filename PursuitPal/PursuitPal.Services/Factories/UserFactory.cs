@@ -1,4 +1,5 @@
-﻿using PursuitPal.Core.Requests;
+﻿using PursuitPal.Core.Models;
+using PursuitPal.Core.Requests;
 using PursuitPal.Infrastructure.Entities;
 
 namespace PursuitPal.Services.Factories
@@ -16,6 +17,15 @@ namespace PursuitPal.Services.Factories
                 Email = request.Email,
                 Password = password ?? throw new ArgumentNullException(nameof(password)),
                 Salt = salt ?? throw new ArgumentNullException(nameof(salt)),
+            };
+
+        public static UserModel ToModel(this User entity)
+            => new UserModel
+            {
+                Id = entity.Id,
+                FirstName = entity.FirstName,
+                LastName = entity.LastName,
+                Email = entity.Email,
             };
     }
 }
