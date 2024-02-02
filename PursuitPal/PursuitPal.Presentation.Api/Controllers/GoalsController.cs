@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PursuitPal.Core.Requests;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {
@@ -11,7 +12,7 @@ namespace PursuitPal.Presentation.Api.Controllers
     {
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateGoal([FromBody] object goal)
+        public async Task<IActionResult> CreateGoal([FromBody] CreateUpdateGoalRequest request)
         {
             throw new NotImplementedException();
         }
