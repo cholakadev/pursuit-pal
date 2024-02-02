@@ -1,8 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PursuitPal.Core.Repositories;
+using PursuitPal.Core.Services;
 using PursuitPal.Infrastructure;
+using PursuitPal.Infrastructure.Entities;
 using PursuitPal.Infrastructure.Repositories;
+using PursuitPal.Presentation.Api.Validators;
+using PursuitPal.Services;
 
 namespace PursuitPal.Presentation.Api.Extensions
 {
@@ -31,6 +37,12 @@ namespace PursuitPal.Presentation.Api.Extensions
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 
+        /// <summary>Configure dependency injection for Services.</summary>
+        public static void AddServicesConfiguration(this IServiceCollection services)
+        {
+            services.AddScoped<IUsersService, UsersService>();
+        }
+
         public static void AddPursuitPalApIVersioning(this IServiceCollection services)
         {
             services.AddApiVersioning(
@@ -45,6 +57,21 @@ namespace PursuitPal.Presentation.Api.Extensions
                     options.GroupNameFormat = "'v'VVV";
                     options.SubstituteApiVersionInUrl = true;
                 });
+        }
+
+        public static void AddValidatorsConfiguration(this IServiceCollection services)
+        {
+            ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+
+            ValidatorOptions.Global.DisplayNameResolver = (_, member, _)
+                => member != null ? member.Name.Replace(" ", string.Empty) : null;
+
+            services.AddFluentValidationAutoValidation(options =>
+            {
+                options.DisableDataAnnotationsValidation = true;
+            });
+
+            services.AddValidatorsFromAssemblyContaining<BaseValidator<object>>();
         }
     }
 }
