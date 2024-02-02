@@ -12,6 +12,9 @@ namespace PursuitPal.Services
             _context = contextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor));
         }
 
-        public Guid UserId => Guid.Parse(_context!.Items["Id"].ToString());
+        public Guid UserId => Guid.TryParse(
+            _context?.User?.Claims.SingleOrDefault(x => x.Type == "Id")?.Value,out var parsedGuid)
+                ? parsedGuid
+                : Guid.Empty;
     }
 }
