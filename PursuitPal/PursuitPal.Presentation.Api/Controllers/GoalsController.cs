@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PursuitPal.Core.Services;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {
@@ -8,9 +10,18 @@ namespace PursuitPal.Presentation.Api.Controllers
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public class GoalsController : Controller
     {
+        private readonly IUsersContextService _contextService;
+
+        public GoalsController(IUsersContextService contextService)
+        {
+            _contextService = contextService ?? throw new ArgumentNullException(nameof(contextService));
+        }
+
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateGoal([FromBody] object goal)
         {
+            var id = _contextService.UserId;
             throw new NotImplementedException();
         }
 

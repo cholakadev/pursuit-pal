@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Services;
 
@@ -19,10 +20,12 @@ namespace PursuitPal.Presentation.Api.Controllers
 
 
         [HttpPost(nameof(Register))]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] CreateUpdateUserRequest request)
             => Ok(await _usersService.RegisterUserAsync(request));
 
         [HttpPost(nameof(Login))]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] GenerateUserTokenRequest request)
             => Ok(await _usersService.GenerateUserTokenAsync(request));
     }
