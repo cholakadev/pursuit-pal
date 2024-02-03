@@ -22,6 +22,13 @@ namespace PursuitPal.Infrastructure.Repositories
             return entity;
         }
 
+        public virtual async Task<ICollection<TEntity>> AddManyAsync(ICollection<TEntity> entities)
+        {
+            await _context.Set<TEntity>().AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
+            return entities;
+        }
+
         public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
             _context.Set<TEntity>().Update(entity);

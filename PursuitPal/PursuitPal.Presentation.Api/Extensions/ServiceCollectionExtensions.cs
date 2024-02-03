@@ -51,6 +51,7 @@ namespace PursuitPal.Presentation.Api.Extensions
             services.AddScoped<IUsersContextService, UsersContextService>();
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IGoalsService, GoalsService>();
+            services.AddScoped<IDemoService, DemoService>();
         }
 
         public static void AddPursuitPalApIVersioning(this IServiceCollection services)
