@@ -27,5 +27,13 @@ namespace PusuitPal.Architecture.Tests
                 .Should().Inherit(typeof(Controller))
                 .AssertIsSuccessful();
         }
+
+        [Fact]
+        public void ApiControllersShouldEndWithController()
+        {
+            AllTypes.That().Inherit(typeof(Controller))
+                .Should().HaveNameEndingWith("Controller")
+                .AssertIsSuccessful();
+        }
     }
 }
