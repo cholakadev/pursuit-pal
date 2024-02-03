@@ -7,6 +7,9 @@ namespace PursuitPal.Core.Repositories
     {
         Task<TEntity> AddAsync(TEntity entity);
 
+
+        Task<ICollection<TEntity>> AddManyAsync(ICollection<TEntity> entities);
+
         Task<TEntity> UpdateAsync(TEntity entity);
 
         Task<int> DeleteAsync(TEntity entity, bool isHard = false);
