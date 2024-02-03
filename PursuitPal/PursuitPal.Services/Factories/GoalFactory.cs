@@ -1,4 +1,5 @@
-﻿using PursuitPal.Core.Requests;
+﻿using PursuitPal.Core.Helpers;
+using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
 using PursuitPal.Infrastructure.Entities;
 
@@ -11,7 +12,7 @@ namespace PursuitPal.Services.Factories
             {
                 FromDate = request.FromDate,
                 ToDate = request.ToDate,
-                Status = request.Status,
+                Status = request.Status.ToStringStatus(),
                 Details = new GoalDetails
                 {
                     Name = request.Name,
