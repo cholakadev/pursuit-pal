@@ -13,25 +13,39 @@ namespace PusuitPal.Architecture.Tests
         {
         }
 
-        [Fact]
-        public void CoreLayerShouldNotHaveDependencyOnOuterLayers()
+        [Theory]
+        [ClassData(typeof(InnerLayerDependencyTestCases))]
+        public void InnerLayerShouldNotDependOnOuterLayers(Assembly? innterTypeAssembly, Assembly[] outerLayersAssemblies)
         {
-            var outerLayerAssemblies = new List<Assembly>
-            {
-                ProjectTypesFixture.PursuitPalServicesAssembly,
-                ProjectTypesFixture.PursuitPalPresentationApiAssembly,
-                ProjectTypesFixture.PursuitPalInfrastructureAssembly,
-            };
-
-            var outerLayerTypes = outerLayerAssemblies
+            var outerLayersTypes = outerLayersAssemblies
                 .SelectMany(a => a.GetTypes()
                     .Where(t => t != null && t.FullName != null &&
                                 t.FullName.StartsWith(a.GetName().Name)))
                 .Select(t => t.FullName)
                 .ToArray();
 
-            Types.InAssembly(ProjectTypesFixture.PursuitPalCoreAssembly)
-                .Should().NotHaveDependencyOnAll(outerLayerTypes)
+            var innterTypes = Types.InAssembly(innterTypeAssembly);
+
+            innterTypes
+                    .Should().NotHaveDependencyOnAny(outerLayersTypes)
+                    .GetResult();
+        }
+
+        [Theory]
+        [ClassData(typeof(AdjacentOrInternalLayerDependencyTestCases))]
+        public void TargetLayerShouldNotAccessAdjacentOrInnerLayers(Assembly? targetAssembly, Assembly[] adjacentOrInternalAssemblies)
+        {
+            var apiTypes = Types.InAssembly(targetAssembly);
+
+            var infrastructureTypes = Types.InAssemblies(adjacentOrInternalAssemblies)
+                .GetTypes()
+                .Select(t => t.FullName)
+                .ToArray();
+
+            apiTypes
+                .That().DoNotHaveName("Program")
+                .And().DoNotHaveName("ServiceCollectionExtensions")
+                .Should().NotHaveDependencyOnAny(infrastructureTypes)
                 .AssertIsSuccessful();
         }
     }
