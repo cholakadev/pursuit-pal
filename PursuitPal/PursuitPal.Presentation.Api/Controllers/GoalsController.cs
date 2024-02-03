@@ -35,7 +35,8 @@ namespace PursuitPal.Presentation.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllGoals()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllGoals([FromQuery] GetGoalsRequest request)
         {
             throw new NotImplementedException();
         }

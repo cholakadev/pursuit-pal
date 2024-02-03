@@ -32,5 +32,10 @@ namespace PursuitPal.Services
 
             return createdGoal.ToResponse();
         }
+
+        public Task<IEnumerable<GoalResponse>> GetAllGoalsAsync(GetGoalsRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
