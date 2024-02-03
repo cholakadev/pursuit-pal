@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /PursuitPal/PursuitPal.Presentation.Api/appsettings.json
+/PursuitPal/PursuitPal.Presentation.Api/appsettings.Development.json

@@ -12,7 +12,7 @@ namespace PursuitPal.Infrastructure.Entities
 
         public DateTime ToDate { get; set; }
 
-        public GoalStatus Status { get; set; }
+        public string Status { get; set; }
 
         public bool Active { get; set; }
 
