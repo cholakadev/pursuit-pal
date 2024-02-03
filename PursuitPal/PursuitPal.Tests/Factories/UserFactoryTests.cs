@@ -8,18 +8,11 @@ namespace PursuitPal.Tests.Factories
 {
     public class UserFactoryTests
     {
-        private readonly CreateUpdateUserRequest _createUpdateUserRequest;
         private readonly User _user;
+        private readonly CreateUpdateUserRequest _createUpdateUserRequest;
 
         public UserFactoryTests()
         {
-            _createUpdateUserRequest = new CreateUpdateUserRequest
-            {
-                Email = "test",
-                FirstName = "Test",
-                LastName = "Test",
-            };
-
             _user = new User
             {
                 Id = Guid.NewGuid(),
@@ -27,10 +20,17 @@ namespace PursuitPal.Tests.Factories
                 LastName = "Test",
                 Email = "test",
             };
+
+            _createUpdateUserRequest = new CreateUpdateUserRequest
+            {
+                FirstName = "Test",
+                LastName = "Test",
+                Email = "test",
+            };
         }
 
         [Fact]
-        public void Handle_WhenConvertingValidRequestToEntity_ShouldReturnUserEntity()
+        public void Handle_WhenConvertingValidRequestToEntity_ShouldReturnEntity()
         {
             var password = "test_password";
             var salt = "test_salt";
@@ -73,7 +73,7 @@ namespace PursuitPal.Tests.Factories
         }
 
         [Fact]
-        public void Handle_WhenConvertingValidEntityToUserModel_ShouldReturnUserModel()
+        public void Handle_WhenConvertingValidEntityToModel_ShouldReturnModel()
         {
             var userModel = _user.ToModel();
             userModel.Should().BeOfType<UserModel>();
@@ -83,7 +83,7 @@ namespace PursuitPal.Tests.Factories
         }
 
         [Fact]
-        public void Handle_WhenConvertingNullEntityToUserModel_ShouldThrowException()
+        public void Handle_WhenConvertingNullEntityToModel_ShouldThrowException()
         {
             User? user = null;
             Assert.Throws<ArgumentNullException>(() => user.ToModel());

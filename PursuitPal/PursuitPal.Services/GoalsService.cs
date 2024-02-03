@@ -22,7 +22,7 @@ namespace PursuitPal.Services
             _goalsRepository = goalsRepository ?? throw new ArgumentNullException(nameof(goalsRepository));
             _usersContextService = usersContextService ?? throw new ArgumentNullException(nameof(usersContextService));
         }
-        public async Task<CreateUpdateGoalResponse> CreateGoalAsync(CreateUpdateGoalRequest request)
+        public async Task<GoalResponse> CreateGoalAsync(CreateUpdateGoalRequest request)
         {
             var goalToCreate = request.ToEntity(_usersContextService.UserId);
             var createdGoal = await _goalsRepository.AddAsync(goalToCreate);
@@ -45,7 +45,7 @@ namespace PursuitPal.Services
                 .Where(x => x.UserId == userId &&
                             (!request.Statuses.Any() || goalStatuses.Contains(x.Status)) &&
                             x.FromDate >= request.FromDate && x.ToDate <= request.ToDate)
-                .Select(x => x.ToGoalResponse())
+                .Select(x => x.ToResponse())
                 .ToListAsync();
         }
     }

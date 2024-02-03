@@ -8,7 +8,9 @@ namespace PursuitPal.Services.Factories
     public static class GoalFactory
     {
         public static Goal ToEntity(this CreateUpdateGoalRequest request, Guid userId)
-            => new Goal
+            => request is null
+            ? throw new ArgumentNullException(nameof(request))
+            : new Goal
             {
                 UserId = userId,
                 FromDate = request.FromDate,
@@ -22,20 +24,10 @@ namespace PursuitPal.Services.Factories
                 }
             };
 
-        public static CreateUpdateGoalResponse ToResponse(this Goal entity)
-            => new CreateUpdateGoalResponse
-            {
-                Id = entity.Id,
-                FromDate = entity.FromDate,
-                ToDate = entity.ToDate,
-                Status = entity.Status,
-                Name = entity.Details.Name,
-                Description = entity.Details.Description,
-                CompletionCriteria = entity.Details.CompletionCriteria
-            };
-
-        public static GoalResponse ToGoalResponse(this Goal entity)
-            => new GoalResponse
+        public static GoalResponse ToResponse(this Goal entity)
+            => entity is null
+            ? throw new ArgumentNullException(nameof(entity))
+            : new GoalResponse
             {
                 Id = entity.Id,
                 FromDate = entity.FromDate,
