@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NetArchTest.Rules;
+using Microsoft.EntityFrameworkCore;
 using PursuitPal.Core.Contracts;
+using PursuitPal.Core.Contracts.Repositories;
+using PursuitPal.Infrastructure.Entities;
+using PursuitPal.Presentation.Api.Validators;
 using PusuitPal.Architecture.Tests.Extensions;
 using Xunit;
 
@@ -39,26 +42,98 @@ namespace PusuitPal.Architecture.Tests
         }
 
         [Fact]
+        public void ApiControllersShouldResideInPresentationApi()
+        {
+            AllTypes.That().Inherit(typeof(Controller))
+                .Should().ResideInNamespaceContaining("Presentation.Api")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void ValidatorsShouldResideInPresentationApi()
+        {
+            AllTypes.That().Inherit(typeof(BaseValidator<>))
+                .Should().ResideInNamespaceContaining("Presentation.Api")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void RequestsShouldEndWithRequest()
+        {
+            AllTypes.That().ResideInNamespaceContaining("Core.Requests")
+                .Should().HaveNameEndingWith("Request")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
         public void RequestsShouldResideInCore()
         {
-            AllTypes.That().ImplementInterface(typeof(IRequest))
-                .Should().ResideInNamespaceContaining("PursuitPal.Core.Requests")
+            AllTypes.That().HaveNameEndingWith("Request")
+                .Should().ResideInNamespaceContaining("Core.Requests")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void ResponsesShouldEndWithResponse()
+        {
+            AllTypes.That().ResideInNamespaceContaining("Core.Responses")
+                .Should().HaveNameEndingWith("Response")
                 .AssertIsSuccessful();
         }
 
         [Fact]
         public void ResponsesShouldResideInCore()
         {
-            AllTypes.That().ImplementInterface(typeof(IResponse))
-                .Should().ResideInNamespaceContaining("PursuitPal.Core.Responses")
+            AllTypes.That().HaveNameEndingWith("Response")
+                .Should().ResideInNamespaceContaining("Core.Responses")
                 .AssertIsSuccessful();
         }
 
         [Fact]
-        public void ExceptionsShouldResideInCore()
+        public void ServicesShouldEndWithService()
         {
-            AllTypes.That().Inherit(typeof(Exception))
-                .Should().ResideInNamespaceContaining("PursuitPal.Core.Exceptions")
+            AllTypes.That().ResideInNamespaceMatching("PursuitPal.Core.Contracts.Services")
+                .Should().HaveNameEndingWith("Service")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void EntityConfigurationsShouldResideInInfrastructureConfigurations()
+        {
+            AllTypes.That().ImplementInterface(typeof(IEntityTypeConfiguration<>))
+                .Should().ResideInNamespaceContaining("Infrastructure.Configurations")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void EntitiesShouldResideInInfrastructureEntities()
+        {
+            AllTypes.That().Inherit(typeof(Auditable))
+                .Should().ResideInNamespaceContaining("Infrastructure.Entities")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void RepositoriesShouldResideInRepositories()
+        {
+            AllTypes.That().ImplementInterface(typeof(IRepository<>))
+                .Should().ResideInNamespaceContaining("Infrastructure.Repositories")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void DbContextShouldResideInInfrastructure()
+        {
+            AllTypes.That().Inherit(typeof(DbContext))
+                .Should().ResideInNamespaceContaining("Infrastructure")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void FactoriesShouldResideInServices()
+        {
+            AllTypes.That().HaveNameEndingWith("Factory")
+                .Should().ResideInNamespaceContaining("Services.Factories")
                 .AssertIsSuccessful();
         }
     }

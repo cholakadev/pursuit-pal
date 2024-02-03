@@ -1,9 +1,8 @@
-﻿using PursuitPal.Core.Contracts;
-using PursuitPal.Core.Helpers;
+﻿using PursuitPal.Core.Helpers;
 
 namespace PursuitPal.Core.Requests
 {
-    public class CreateUpdateGoalRequest : IRequest
+    public class CreateUpdateGoalRequest
     {
         public string Name { get; set; }
 
