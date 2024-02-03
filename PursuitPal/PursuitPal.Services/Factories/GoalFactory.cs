@@ -33,5 +33,17 @@ namespace PursuitPal.Services.Factories
                 Description = entity.Details.Description,
                 CompletionCriteria = entity.Details.CompletionCriteria
             };
+
+        public static GoalResponse ToGoalResponse(this Goal entity)
+            => new GoalResponse
+            {
+                Id = entity.Id,
+                FromDate = entity.FromDate,
+                ToDate = entity.ToDate,
+                Status = entity.Status,
+                Name = entity.Details.Name,
+                Description = entity.Details.Description,
+                CompletionCriteria = entity.Details.CompletionCriteria
+            };
     }
 }

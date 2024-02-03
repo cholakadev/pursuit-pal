@@ -1,4 +1,6 @@
-﻿using PursuitPal.Core.Exceptions.OperationExceptions;
+﻿using Microsoft.EntityFrameworkCore;
+using PursuitPal.Core.Exceptions.OperationExceptions;
+using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Repositories;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
@@ -33,9 +35,18 @@ namespace PursuitPal.Services
             return createdGoal.ToResponse();
         }
 
-        public Task<IEnumerable<GoalResponse>> GetAllGoalsAsync(GetGoalsRequest request)
+        public async Task<IEnumerable<GoalResponse>> GetAllGoalsAsync(GetGoalsRequest request)
         {
-            throw new NotImplementedException();
+            var userId = _usersContextService.UserId;
+            var goalStatuses = request.Statuses.Select(x => x.ToStringStatus());
+
+            return await _goalsRepository.GetAll()
+                .Include(x => x.Details)
+                .Where(x => x.UserId == userId &&
+                            (!request.Statuses.Any() || goalStatuses.Contains(x.Status)) &&
+                            x.FromDate >= request.FromDate && x.ToDate <= request.ToDate)
+                .Select(x => x.ToGoalResponse())
+                .ToListAsync();
         }
     }
 }
