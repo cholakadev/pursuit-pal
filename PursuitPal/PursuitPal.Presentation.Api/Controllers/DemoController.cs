@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PursuitPal.Core.Requests;
 using PursuitPal.Core.Services;
 
 namespace PursuitPal.Presentation.Api.Controllers
@@ -16,7 +17,7 @@ namespace PursuitPal.Presentation.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         // TODO: Add authorization policy so it can be done only by system admins and disable this endpoint on prod.
-        public async Task<IActionResult> SeedDataAsync()
-            => CreatedAtAction(nameof(SeedDataAsync), await _demoService.SeedDataAsync());
+        public async Task<IActionResult> SeedDataAsync(SeedDemoDataRequest request)
+            => CreatedAtAction(nameof(SeedDataAsync), await _demoService.SeedDataAsync(request));
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace PursuitPal.Core.Services
+﻿using PursuitPal.Core.Requests;
+
+namespace PursuitPal.Core.Services
 {
     public interface IDemoService
     {
-        Task<bool> SeedDataAsync();
+        Task<bool> SeedDataAsync(SeedDemoDataRequest request);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Repositories;
+using PursuitPal.Core.Requests;
 using PursuitPal.Core.Services;
 using PursuitPal.Infrastructure.Entities;
 
@@ -26,10 +27,10 @@ namespace PursuitPal.Services
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
-        public async Task<bool> SeedDataAsync()
+        public async Task<bool> SeedDataAsync(SeedDemoDataRequest request)
         {
-            var createdUsers = await GenerateFakeUsers();
-            var createdGoals = await GenerateFakeGoals(createdUsers.ToList());
+            var createdUsers = await GenerateFakeUsers(request.NumberOfUsers);
+            var createdGoals = await GenerateFakeGoals(createdUsers.ToList(), request.NumberOfGoalsPerUser);
             var createdGoalDetails = await GenerateFakeGoalDetails(createdGoals.ToList());
 
             var hasAnyFakeData = createdUsers != null && createdUsers.Any()
@@ -39,7 +40,7 @@ namespace PursuitPal.Services
             return hasAnyFakeData;
         }
 
-        private async Task<IEnumerable<User>> GenerateFakeUsers()
+        private async Task<IEnumerable<User>> GenerateFakeUsers(int numberOfUsers)
         {
             var pursuitPalHash = new PursuitPalHash();
             var demoPassword = _configuration.GetSection("Secrets:DemoPassword").Value;
@@ -53,20 +54,20 @@ namespace PursuitPal.Services
                 .RuleFor(x => x.Password, f => fakePasswordHash)
                 .RuleFor(x => x.Salt, f => fakeSaltString);
 
-            var generatedUsers = userFaker.Generate(10);
+            var generatedUsers = userFaker.Generate(numberOfUsers);
             var createdUsers = await _usersRepository.AddManyAsync(generatedUsers);
 
             return createdUsers;
         }
 
-        private async Task<IEnumerable<Goal>> GenerateFakeGoals(List<User> createdUsers)
+        private async Task<IEnumerable<Goal>> GenerateFakeGoals(List<User> createdUsers, int numberOfGoalsPerUser)
         {
             var faker = new Faker();
 
             var goals = new List<Goal>();
             foreach (var createdUser in createdUsers)
             {
-                for (int i = 0; i < 15; i++)
+                for (int i = 0; i < numberOfGoalsPerUser; i++)
                 {
                     var fromDate = faker.Date.Between(DateTime.Now, DateTime.Now.AddMonths(1));
                     var toDate = faker.Date.Between(fromDate.AddMonths(1), fromDate.AddMonths(6));
