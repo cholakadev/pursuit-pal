@@ -1,6 +1,4 @@
-﻿using PursuitPal.Core.Helpers;
-
-namespace PursuitPal.Infrastructure.Entities
+﻿namespace PursuitPal.Infrastructure.Entities
 {
     public class Goal : Auditable, IActivatable
     {

@@ -1,5 +1,6 @@
 ﻿using PursuitPal.Core.Exceptions;
 using PursuitPal.Core.Exceptions.ValidationExceptions;
+using PursuitPal.Core.Responses;
 using System.Net;
 using System.Text.Json;
 

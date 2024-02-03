@@ -1,9 +1,9 @@
 ﻿using Bogus;
 using Microsoft.Extensions.Configuration;
+using PursuitPal.Core.Contracts.Repositories;
+using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Helpers;
-using PursuitPal.Core.Repositories;
 using PursuitPal.Core.Requests;
-using PursuitPal.Core.Services;
 using PursuitPal.Infrastructure.Entities;
 
 namespace PursuitPal.Services

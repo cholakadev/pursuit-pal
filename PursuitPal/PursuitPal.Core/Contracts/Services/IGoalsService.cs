@@ -1,7 +1,7 @@
 ﻿using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
 
-namespace PursuitPal.Core.Services
+namespace PursuitPal.Core.Contracts.Services
 {
     public interface IGoalsService
     {

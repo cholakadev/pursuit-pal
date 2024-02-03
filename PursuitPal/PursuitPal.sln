@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PursuitPal.Presentation.Api", "PursuitPal.Presentation.Api\PursuitPal.Presentation.Api.csproj", "{C3718492-8E08-4567-B470-F1B09FB9F71E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PursuitPal.Presentation.Api", "PursuitPal.Presentation.Api\PursuitPal.Presentation.Api.csproj", "{C3718492-8E08-4567-B470-F1B09FB9F71E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PursuitPal.Core", "PursuitPal.Core\PursuitPal.Core.csproj", "{E4D04660-70A8-4BCE-BB4E-99814354522E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PursuitPal.Core", "PursuitPal.Core\PursuitPal.Core.csproj", "{E4D04660-70A8-4BCE-BB4E-99814354522E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PursuitPal.Services", "PursuitPal.Services\PursuitPal.Services.csproj", "{7F8F7EFE-70CD-4F76-8867-34753715A0A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PursuitPal.Services", "PursuitPal.Services\PursuitPal.Services.csproj", "{7F8F7EFE-70CD-4F76-8867-34753715A0A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PursuitPal.Infrastructure", "PursuitPal.Infrastructure\PursuitPal.Infrastructure.csproj", "{FA7435F9-66FA-436D-8F63-D12A54B0B32A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PursuitPal.Infrastructure", "PursuitPal.Infrastructure\PursuitPal.Infrastructure.csproj", "{FA7435F9-66FA-436D-8F63-D12A54B0B32A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PusuitPal.Architecture.Tests", "PusuitPal.Architecture.Tests\PusuitPal.Architecture.Tests.csproj", "{E6EF3581-24F1-45ED-8267-38F0A810BB5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FA7435F9-66FA-436D-8F63-D12A54B0B32A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA7435F9-66FA-436D-8F63-D12A54B0B32A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA7435F9-66FA-436D-8F63-D12A54B0B32A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6EF3581-24F1-45ED-8267-38F0A810BB5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6EF3581-24F1-45ED-8267-38F0A810BB5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6EF3581-24F1-45ED-8267-38F0A810BB5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6EF3581-24F1-45ED-8267-38F0A810BB5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

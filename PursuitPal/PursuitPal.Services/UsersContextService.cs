@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using PursuitPal.Core.Services;
+using PursuitPal.Core.Contracts.Services;
 
 namespace PursuitPal.Services
 {

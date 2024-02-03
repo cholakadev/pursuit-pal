@@ -1,6 +1,4 @@
-﻿using PursuitPal.Core.Helpers;
-
-namespace PursuitPal.Core.Responses
+﻿namespace PursuitPal.Core.Responses
 {
     public class CreateUpdateGoalResponse
     {

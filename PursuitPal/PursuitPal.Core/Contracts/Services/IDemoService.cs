@@ -1,6 +1,6 @@
 ﻿using PursuitPal.Core.Requests;
 
-namespace PursuitPal.Core.Services
+namespace PursuitPal.Core.Contracts.Services
 {
     public interface IDemoService
     {

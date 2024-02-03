@@ -1,4 +1,4 @@
-﻿namespace PursuitPal.Core.Exceptions
+﻿namespace PursuitPal.Core.Responses
 {
     public class ErrorResponse
     {
