@@ -22,7 +22,7 @@ namespace PursuitPal.Presentation.Api.Controllers
         public async Task<IActionResult> CreateGoal([FromBody] CreateUpdateGoalRequest request)
             => CreatedAtAction(nameof(CreateGoal), await _goalsService.CreateGoalAsync(request));
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public async Task<IActionResult> UpdateGoal([FromBody] object goal)
         {
             throw new NotImplementedException();
@@ -34,13 +34,21 @@ namespace PursuitPal.Presentation.Api.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllGoals()
+        [HttpGet, Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllGoals([FromQuery] GetGoalsRequest request)
         {
-            throw new NotImplementedException();
+            var result = await _goalsService.GetAllGoalsAsync(request);
+
+            if (result != null && result.Any())
+            {
+                return Ok(result);
+            }
+
+            return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public async Task<IActionResult> DeleteGoal([FromQuery] Guid id)
         {
             throw new NotImplementedException();
