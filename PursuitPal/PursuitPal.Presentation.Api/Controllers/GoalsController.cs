@@ -5,10 +5,9 @@ using PursuitPal.Core.Services;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {
-    [ApiController]
-    [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ApiController, ApiVersion("1.0"), Route("api/v{version:apiVersion}/[controller]")]
     public class GoalsController : Controller
     {
         private readonly IGoalsService _goalsService;
@@ -18,8 +17,8 @@ namespace PursuitPal.Presentation.Api.Controllers
             _goalsService = goalsService ?? throw new ArgumentNullException(nameof(goalsService));
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost, Authorize]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateGoal([FromBody] CreateUpdateGoalRequest request)
             => CreatedAtAction(nameof(CreateGoal), await _goalsService.CreateGoalAsync(request));
 

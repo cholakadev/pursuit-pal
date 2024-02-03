@@ -5,9 +5,7 @@ using PursuitPal.Core.Services;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {
-    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ApiController, ApiVersion("1.0"), Route("api/v{version:apiVersion}/[controller]")]
     public class UsersController : Controller
     {
@@ -19,13 +17,13 @@ namespace PursuitPal.Presentation.Api.Controllers
         }
 
 
-        [HttpPost(nameof(Register))]
-        [AllowAnonymous]
+        [HttpPost(nameof(Register)), AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Register([FromBody] CreateUpdateUserRequest request)
-            => Ok(await _usersService.RegisterUserAsync(request));
+            => CreatedAtAction(nameof(Register), await _usersService.RegisterUserAsync(request));
 
-        [HttpPost(nameof(Login))]
-        [AllowAnonymous]
+        [HttpPost(nameof(Login)), AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Login([FromBody] GenerateUserTokenRequest request)
             => Ok(await _usersService.GenerateUserTokenAsync(request));
     }
