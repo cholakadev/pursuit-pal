@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NetArchTest.Rules;
+using PursuitPal.Core.Contracts;
 using PusuitPal.Architecture.Tests.Extensions;
 using Xunit;
 
@@ -33,6 +35,30 @@ namespace PusuitPal.Architecture.Tests
         {
             AllTypes.That().Inherit(typeof(Controller))
                 .Should().HaveNameEndingWith("Controller")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void RequestsShouldResideInCore()
+        {
+            AllTypes.That().ImplementInterface(typeof(IRequest))
+                .Should().ResideInNamespaceContaining("PursuitPal.Core.Requests")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void ResponsesShouldResideInCore()
+        {
+            AllTypes.That().ImplementInterface(typeof(IResponse))
+                .Should().ResideInNamespaceContaining("PursuitPal.Core.Responses")
+                .AssertIsSuccessful();
+        }
+
+        [Fact]
+        public void ExceptionsShouldResideInCore()
+        {
+            AllTypes.That().Inherit(typeof(Exception))
+                .Should().ResideInNamespaceContaining("PursuitPal.Core.Exceptions")
                 .AssertIsSuccessful();
         }
     }

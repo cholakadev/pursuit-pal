@@ -1,6 +1,8 @@
-﻿namespace PursuitPal.Core.Responses
+﻿using PursuitPal.Core.Contracts;
+
+namespace PursuitPal.Core.Responses
 {
-    public class UserTokenResponse
+    public class UserTokenResponse : IResponse
     {
         public string Token { get; set; }
     }

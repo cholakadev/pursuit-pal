@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PursuitPal.Core.Repositories;
+using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Infrastructure.Entities;
 using System.Linq.Expressions;
 

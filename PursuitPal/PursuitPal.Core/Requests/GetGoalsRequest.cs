@@ -1,8 +1,9 @@
-﻿using PursuitPal.Core.Helpers;
+﻿using PursuitPal.Core.Contracts;
+using PursuitPal.Core.Helpers;
 
 namespace PursuitPal.Core.Requests
 {
-    public class GetGoalsRequest
+    public class GetGoalsRequest : IRequest
     {
         public IEnumerable<GoalStatus> Statuses { get; set; }
 

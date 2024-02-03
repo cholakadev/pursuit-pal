@@ -1,6 +1,8 @@
-﻿namespace PursuitPal.Core.Requests
+﻿using PursuitPal.Core.Contracts;
+
+namespace PursuitPal.Core.Requests
 {
-    public class CreateUpdateUserRequest
+    public class CreateUpdateUserRequest : IRequest
     {
         public string FirstName { get; set; }
 

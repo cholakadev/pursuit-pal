@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Requests;
-using PursuitPal.Core.Services;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {

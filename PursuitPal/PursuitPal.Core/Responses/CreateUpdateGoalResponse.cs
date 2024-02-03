@@ -1,8 +1,8 @@
-﻿using PursuitPal.Core.Helpers;
+﻿using PursuitPal.Core.Contracts;
 
 namespace PursuitPal.Core.Responses
 {
-    public class CreateUpdateGoalResponse
+    public class CreateUpdateGoalResponse : IResponse
     {
         public Guid Id { get; set; }
 

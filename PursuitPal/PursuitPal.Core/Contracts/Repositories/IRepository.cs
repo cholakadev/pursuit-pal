@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace PursuitPal.Core.Repositories
+namespace PursuitPal.Core.Contracts.Repositories
 {
     public interface IRepository<TEntity>
         where TEntity : class

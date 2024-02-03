@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Extensions;
 using PursuitPal.Core.Helpers;
-using PursuitPal.Core.Services;
 using PursuitPal.Infrastructure.Configurations;
 using PursuitPal.Infrastructure.Entities;
 

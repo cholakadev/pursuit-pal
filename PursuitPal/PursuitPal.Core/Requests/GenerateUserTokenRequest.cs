@@ -1,6 +1,8 @@
-﻿namespace PursuitPal.Core.Requests
+﻿using PursuitPal.Core.Contracts;
+
+namespace PursuitPal.Core.Requests
 {
-    public class GenerateUserTokenRequest
+    public class GenerateUserTokenRequest : IRequest
     {
         public string Email { get; set; }
 

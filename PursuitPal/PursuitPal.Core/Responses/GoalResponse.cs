@@ -1,6 +1,8 @@
-﻿namespace PursuitPal.Core.Responses
+﻿using PursuitPal.Core.Contracts;
+
+namespace PursuitPal.Core.Responses
 {
-    public class GoalResponse
+    public class GoalResponse : IResponse
     {
         public Guid Id { get; set; }
 

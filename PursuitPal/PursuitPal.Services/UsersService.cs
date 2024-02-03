@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+using PursuitPal.Core.Contracts.Repositories;
+using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Exceptions.OperationExceptions;
 using PursuitPal.Core.Exceptions.ValidationExceptions;
 using PursuitPal.Core.Helpers;
-using PursuitPal.Core.Repositories;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
-using PursuitPal.Core.Services;
 using PursuitPal.Infrastructure.Entities;
 using PursuitPal.Services.Factories;
 
