@@ -10,7 +10,9 @@ namespace PursuitPal.Services.Factories
             this CreateUpdateUserRequest request,
             string? password,
             string? salt)
-            => new User
+            => request is null
+            ? throw new ArgumentNullException(nameof(request))
+            : new User
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -20,7 +22,9 @@ namespace PursuitPal.Services.Factories
             };
 
         public static UserModel ToModel(this User entity)
-            => new UserModel
+            => entity is null
+            ? throw new ArgumentNullException(nameof(entity))
+            : new UserModel
             {
                 Id = entity.Id,
                 FirstName = entity.FirstName,
