@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PursuitPal.Core.Helpers;
 using PursuitPal.Infrastructure.Entities;
 
 namespace PursuitPal.Infrastructure.Configurations

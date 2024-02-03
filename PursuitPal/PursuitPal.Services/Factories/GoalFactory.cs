@@ -7,9 +7,10 @@ namespace PursuitPal.Services.Factories
 {
     public static class GoalFactory
     {
-        public static Goal ToEntity(this CreateUpdateGoalRequest request)
+        public static Goal ToEntity(this CreateUpdateGoalRequest request, Guid userId)
             => new Goal
             {
+                UserId = userId,
                 FromDate = request.FromDate,
                 ToDate = request.ToDate,
                 Status = request.Status.ToStringStatus(),

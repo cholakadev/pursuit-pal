@@ -8,17 +8,21 @@ using PursuitPal.Services.Factories;
 
 namespace PursuitPal.Services
 {
-    internal class GoalsService : IGoalsService
+    public class GoalsService : IGoalsService
     {
         private readonly IRepository<Goal> _goalsRepository;
+        private readonly IUsersContextService _usersContextService;
 
-        public GoalsService(IRepository<Goal> goalsRepository)
+        public GoalsService(
+            IRepository<Goal> goalsRepository,
+            IUsersContextService usersContextService)
         {
             _goalsRepository = goalsRepository ?? throw new ArgumentNullException(nameof(goalsRepository));
+            _usersContextService = usersContextService ?? throw new ArgumentNullException(nameof(usersContextService));
         }
         public async Task<CreateUpdateGoalResponse> CreateGoalAsync(CreateUpdateGoalRequest request)
         {
-            var goalToCreate = request.ToEntity();
+            var goalToCreate = request.ToEntity(_usersContextService.UserId);
             var createdGoal = await _goalsRepository.AddAsync(goalToCreate);
 
             if (createdGoal is null)

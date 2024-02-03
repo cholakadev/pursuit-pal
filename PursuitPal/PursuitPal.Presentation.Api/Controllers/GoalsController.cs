@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PursuitPal.Core.Requests;
+using PursuitPal.Core.Services;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {
@@ -10,12 +11,17 @@ namespace PursuitPal.Presentation.Api.Controllers
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public class GoalsController : Controller
     {
+        private readonly IGoalsService _goalsService;
+
+        public GoalsController(IGoalsService goalsService)
+        {
+            _goalsService = goalsService ?? throw new ArgumentNullException(nameof(goalsService));
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateGoal([FromBody] CreateUpdateGoalRequest request)
-        {
-            throw new NotImplementedException();
-        }
+            => CreatedAtAction(nameof(CreateGoal), await _goalsService.CreateGoalAsync(request));
 
         [HttpPut]
         public async Task<IActionResult> UpdateGoal([FromBody] object goal)
