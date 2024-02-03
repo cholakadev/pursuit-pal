@@ -20,13 +20,20 @@ namespace PursuitPal.Tests.Services
             _usersRepository = Substitute.For<IRepository<User>>();
             _configuration = Substitute.For<IConfiguration>();
 
+            _usersRepository
+                .AddAsync(Arg.Any<User>())
+                .Returns(new User { Id = Guid.NewGuid() });
+
             _sut = new UsersService(_usersRepository, _configuration);
         }
 
         [Fact]
-        public void Handle_WhenUserIsCreatedSuccessfully_ShouldReturnUserId()
+        public async Task Handle_WhenUserIsCreatedSuccessfully_ShouldReturnUserId()
         {
+            var act = async () => await _sut.RegisterUserAsync(Request);
 
+            await act.Should().NotThrowAsync();
+            await _usersRepository.Received().AddAsync(Arg.Any<User>());
         }
 
         [Fact]
