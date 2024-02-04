@@ -44,7 +44,7 @@ namespace PursuitPal.Tests.Services
                 .AddAsync(Arg.Any<Goal>())
                 .Returns(default(Goal));
 
-            var act = async () => await _sut.CreateGoalAsync(Request);
+            var act = async () => await _sut.CreateGoalAsync(CreateUpdateRequest);
 
             await act.Should().ThrowAsync<FailedCreationException>();
         }
@@ -52,13 +52,25 @@ namespace PursuitPal.Tests.Services
         [Fact]
         public async Task CreateGoal_Handle_WhenGoalIsCreatedSuccessfuly_ShouldNotThrowFailedCreationException()
         {
-            var act = async () => await _sut.CreateGoalAsync(Request);
+            var act = async () => await _sut.CreateGoalAsync(CreateUpdateRequest);
 
             await act.Should().NotThrowAsync();
             await _goalsRepository.Received().AddAsync(Arg.Any<Goal>());
         }
 
-        private CreateUpdateGoalRequest Request => new CreateUpdateGoalRequest
+        [Fact]
+        public async Task GetAllGoals_Handle_WhenGoalIsNotCreatedSuccessfuly_ShouldThrowFailedCreationException()
+        {
+            _goalsRepository
+                .AddAsync(Arg.Any<Goal>())
+                .Returns(default(Goal));
+
+            var act = async () => await _sut.CreateGoalAsync(CreateUpdateRequest);
+
+            await act.Should().ThrowAsync<FailedCreationException>();
+        }
+
+        private CreateUpdateGoalRequest CreateUpdateRequest => new CreateUpdateGoalRequest
         {
             Name = "name",
             Description = "description",
@@ -66,6 +78,13 @@ namespace PursuitPal.Tests.Services
             FromDate = DateTime.UtcNow,
             ToDate = DateTime.UtcNow,
             Status = GoalStatus.Active,
+        };
+
+        private GetGoalsRequest GetGoalsRequest => new GetGoalsRequest
+        {
+            FromDate = DateTime.UtcNow,
+            ToDate = DateTime.UtcNow,
+            Statuses = new List<GoalStatus>(),
         };
     }
 }

@@ -32,7 +32,7 @@ namespace PursuitPal.Tests.Services
         [Fact]
         public async Task RegisterUser_Handle_WhenUserIsCreatedSuccessfully_ShouldReturnUserId()
         {
-            var act = async () => await _sut.RegisterUserAsync(Request);
+            var act = async () => await _sut.RegisterUserAsync(CreateUpdateRequest);
 
             await act.Should().NotThrowAsync();
             await _usersRepository.Received().AddAsync(Arg.Any<User>());
@@ -45,7 +45,7 @@ namespace PursuitPal.Tests.Services
                 .AddAsync(Arg.Any<User>())
                 .Returns(default(User));
 
-            var act = async () => await _sut.RegisterUserAsync(Request);
+            var act = async () => await _sut.RegisterUserAsync(CreateUpdateRequest);
 
             await act.Should().ThrowAsync<FailedCreationException>();
         }
@@ -76,7 +76,7 @@ namespace PursuitPal.Tests.Services
             await act.Should().ThrowAsync<FailedAuthenticationException>();
         }
 
-        private CreateUpdateUserRequest Request => new CreateUpdateUserRequest
+        private CreateUpdateUserRequest CreateUpdateRequest => new CreateUpdateUserRequest
         {
             Email = "Test",
             FirstName = "Test",
