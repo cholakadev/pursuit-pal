@@ -9,7 +9,7 @@ namespace PursuitPal.Services
 
         public UsersContextService(IHttpContextAccessor contextAccessor)
         {
-            _context = contextAccessor?.HttpContext ?? throw new ArgumentNullException(nameof(contextAccessor));
+            _context = contextAccessor?.HttpContext; //?? throw new ArgumentNullException(nameof(contextAccessor));
         }
 
         public Guid UserId => Guid.TryParse(

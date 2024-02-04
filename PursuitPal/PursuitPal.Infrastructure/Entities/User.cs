@@ -16,6 +16,12 @@
 
         public bool Active { get; set; }
 
+        public string Position { get; set; }
+
+        public int DepartmentId { get; set; }
+
+        public Department Department { get; set; }
+
         public IEnumerable<Goal> Goals { get; set; }
     }
 }
