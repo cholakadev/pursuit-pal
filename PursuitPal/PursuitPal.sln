@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PursuitPal.Services", "Purs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PursuitPal.Infrastructure", "PursuitPal.Infrastructure\PursuitPal.Infrastructure.csproj", "{FA7435F9-66FA-436D-8F63-D12A54B0B32A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PusuitPal.Architecture.Tests", "PusuitPal.Architecture.Tests\PusuitPal.Architecture.Tests.csproj", "{E6EF3581-24F1-45ED-8267-38F0A810BB5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PusuitPal.Architecture.Tests", "PusuitPal.Architecture.Tests\PusuitPal.Architecture.Tests.csproj", "{E6EF3581-24F1-45ED-8267-38F0A810BB5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PursuitPal.Tests", "PursuitPal.Tests\PursuitPal.Tests.csproj", "{773C0D40-64DB-416B-85F8-3A876FF74497}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{E6EF3581-24F1-45ED-8267-38F0A810BB5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6EF3581-24F1-45ED-8267-38F0A810BB5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6EF3581-24F1-45ED-8267-38F0A810BB5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{773C0D40-64DB-416B-85F8-3A876FF74497}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{773C0D40-64DB-416B-85F8-3A876FF74497}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{773C0D40-64DB-416B-85F8-3A876FF74497}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{773C0D40-64DB-416B-85F8-3A876FF74497}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
