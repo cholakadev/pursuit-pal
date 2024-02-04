@@ -29,20 +29,6 @@ namespace PursuitPal.Tests.Services
             _sut = new UsersService(_usersRepository, _configuration);
         }
 
-        private CreateUpdateUserRequest Request => new CreateUpdateUserRequest
-        {
-            Email = "Test",
-            FirstName = "Test",
-            LastName = "Test",
-            Password = "Test",
-        };
-
-        private GenerateUserTokenRequest TokenRequest => new GenerateUserTokenRequest
-        {
-            Email = "test@test.com",
-            Password = "test_password",
-        };
-
         [Fact]
         public async Task RegisterUser_Handle_WhenUserIsCreatedSuccessfully_ShouldReturnUserId()
         {
@@ -89,5 +75,19 @@ namespace PursuitPal.Tests.Services
 
             await act.Should().ThrowAsync<FailedAuthenticationException>();
         }
+
+        private CreateUpdateUserRequest Request => new CreateUpdateUserRequest
+        {
+            Email = "Test",
+            FirstName = "Test",
+            LastName = "Test",
+            Password = "Test",
+        };
+
+        private GenerateUserTokenRequest TokenRequest => new GenerateUserTokenRequest
+        {
+            Email = "test@test.com",
+            Password = "test_password",
+        };
     }
 }
