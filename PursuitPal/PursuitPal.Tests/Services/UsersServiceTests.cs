@@ -3,9 +3,11 @@ using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Exceptions.OperationExceptions;
+using PursuitPal.Core.Exceptions.ValidationExceptions;
 using PursuitPal.Core.Requests;
 using PursuitPal.Infrastructure.Entities;
 using PursuitPal.Services;
+using System.Linq.Expressions;
 
 namespace PursuitPal.Tests.Services
 {
@@ -27,8 +29,22 @@ namespace PursuitPal.Tests.Services
             _sut = new UsersService(_usersRepository, _configuration);
         }
 
+        private CreateUpdateUserRequest Request => new CreateUpdateUserRequest
+        {
+            Email = "Test",
+            FirstName = "Test",
+            LastName = "Test",
+            Password = "Test",
+        };
+
+        private GenerateUserTokenRequest TokenRequest => new GenerateUserTokenRequest
+        {
+            Email = "test@test.com",
+            Password = "test_password",
+        };
+
         [Fact]
-        public async Task Handle_WhenUserIsCreatedSuccessfully_ShouldReturnUserId()
+        public async Task RegisterUser_Handle_WhenUserIsCreatedSuccessfully_ShouldReturnUserId()
         {
             var act = async () => await _sut.RegisterUserAsync(Request);
 
@@ -37,7 +53,7 @@ namespace PursuitPal.Tests.Services
         }
 
         [Fact]
-        public async Task Handle_WhenUserIsNotCreatedSuccessfully_ShouldThrowFailedCreationException()
+        public async Task RegisterUser_Handle_WhenUserIsNotCreatedSuccessfully_ShouldThrowFailedCreationException()
         {
             _usersRepository
                 .AddAsync(Arg.Any<User>())
@@ -48,12 +64,30 @@ namespace PursuitPal.Tests.Services
             await act.Should().ThrowAsync<FailedCreationException>();
         }
 
-        private CreateUpdateUserRequest Request => new CreateUpdateUserRequest
+        [Fact]
+        public async Task GenerateUserToken_Handle_WhenUserIsNotFoundByEmail_ShouldThrowFailedAuthenticationException()
         {
-            Email = "Test",
-            FirstName = "Test",
-            LastName = "Test",
-            Password = "Test",
-        };
+            await _usersRepository
+                .FindAsync(Arg.Is<Expression<Func<User, bool>>>(expr =>
+                    expr.Compile()(null)));
+
+            var act = async () => await _sut.GenerateUserTokenAsync(TokenRequest);
+
+            await act.Should().ThrowAsync<FailedAuthenticationException>();
+        }
+
+        [Fact]
+        public async Task GenerateUserToken_Handle_WhenPasswordDoesNotMatch_ShouldThrowFailedAuthenticationException()
+        {
+            var email = "test@test.com";
+
+            await _usersRepository
+                .FindAsync(Arg.Is<Expression<Func<User, bool>>>(expr =>
+                    expr.Compile()(new User { Id = Guid.NewGuid(), Email = email })));
+
+            var act = async () => await _sut.GenerateUserTokenAsync(TokenRequest);
+
+            await act.Should().ThrowAsync<FailedAuthenticationException>();
+        }
     }
 }
