@@ -21,6 +21,7 @@ namespace PursuitPal.Tests.Validators
                 FirstName = "Test",
                 LastName = "Test",
                 Email = "test@test.com",
+                Position = "Test",
                 Password = "test_password"
             };
 
@@ -36,6 +37,7 @@ namespace PursuitPal.Tests.Validators
             {
                 LastName = "Test",
                 Email = "test@test.com",
+                Position = "Test",
                 Password = "test_password"
             };
 
@@ -51,6 +53,7 @@ namespace PursuitPal.Tests.Validators
             {
                 FirstName = "Test",
                 Email = "test@test.com",
+                Position = "Test",
                 Password = "test_password"
             };
 
@@ -67,6 +70,7 @@ namespace PursuitPal.Tests.Validators
                 FirstName = "Test",
                 LastName = "Test",
                 Email = string.Empty,
+                Position = "Test",
                 Password = "test_password"
             };
 
@@ -82,12 +86,29 @@ namespace PursuitPal.Tests.Validators
             {
                 FirstName = "Test",
                 LastName = "Test",
+                Position = "Test",
                 Email = "test@test.com",
             };
 
             var result = _validator.TestValidate(request);
 
             result.ShouldHaveValidationErrorFor(x => x.Password);
+        }
+
+        [Fact]
+        public void Handle_WhenPositionIsInvalid_ShouldHaveValidationError()
+        {
+            var request = new CreateUpdateUserRequest
+            {
+                FirstName = "Test",
+                LastName = "Test",
+                Email = "test@test.com",
+                Password = "test_password",
+            };
+
+            var result = _validator.TestValidate(request);
+
+            result.ShouldHaveValidationErrorFor(x => x.Position);
         }
     }
 }
