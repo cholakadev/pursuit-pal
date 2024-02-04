@@ -23,6 +23,8 @@ namespace PursuitPal.Infrastructure
 
         public DbSet<Goal> Goals { get; set; }
 
+        public DbSet<Department> Departments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
