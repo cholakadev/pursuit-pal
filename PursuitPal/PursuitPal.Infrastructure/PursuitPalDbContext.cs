@@ -23,12 +23,15 @@ namespace PursuitPal.Infrastructure
 
         public DbSet<Goal> Goals { get; set; }
 
+        public DbSet<Department> Departments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
             modelBuilder.ApplyConfiguration(new GoalEntityConfiguration());
             modelBuilder.ApplyConfiguration(new GoalDetailsEntityConfiguration());
             modelBuilder.ApplyConfiguration(new GoalFeedbackEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new DepartmentEntityConfiguration());
         }
 
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

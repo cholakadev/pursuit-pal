@@ -51,6 +51,8 @@ namespace PursuitPal.Services
                 .RuleFor(x => x.FirstName, f => f.Name.FirstName())
                 .RuleFor(x => x.LastName, f => f.Name.LastName())
                 .RuleFor(x => x.Email, f => f.Person.Email)
+                .RuleFor(x => x.Position, f => f.Name.JobTitle())
+                .RuleFor(x => x.DepartmentId, f => f.Random.Number(1, 16))
                 .RuleFor(x => x.Password, f => fakePasswordHash)
                 .RuleFor(x => x.Salt, f => fakeSaltString);
 

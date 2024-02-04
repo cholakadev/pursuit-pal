@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PursuitPal.Infrastructure;
 
@@ -11,9 +12,11 @@ using PursuitPal.Infrastructure;
 namespace PursuitPal.Infrastructure.Migrations
 {
     [DbContext(typeof(PursuitPalDbContext))]
-    partial class PursuitPalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240204170344_UserPositionAndDepartment")]
+    partial class UserPositionAndDepartment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace PursuitPal.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 2, 4, 17, 13, 38, 947, DateTimeKind.Utc).AddTicks(3071));
+                        .HasDefaultValue(new DateTime(2024, 2, 4, 17, 3, 43, 745, DateTimeKind.Utc).AddTicks(4223));
 
                     b.Property<Guid>("CreatedBy")
                         .ValueGeneratedOnAdd()
@@ -61,7 +64,7 @@ namespace PursuitPal.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Department");
 
                     b.HasData(
                         new
