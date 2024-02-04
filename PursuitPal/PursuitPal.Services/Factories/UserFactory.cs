@@ -17,6 +17,7 @@ namespace PursuitPal.Services.Factories
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
+                Position = request.Position,
                 Password = password ?? throw new ArgumentNullException(nameof(password)),
                 Salt = salt ?? throw new ArgumentNullException(nameof(salt)),
             };
