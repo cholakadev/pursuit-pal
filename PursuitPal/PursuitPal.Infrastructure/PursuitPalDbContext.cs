@@ -32,6 +32,7 @@ namespace PursuitPal.Infrastructure
             modelBuilder.ApplyConfiguration(new GoalDetailsEntityConfiguration());
             modelBuilder.ApplyConfiguration(new GoalFeedbackEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DepartmentEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleEntityConfiguration());
         }
 
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
