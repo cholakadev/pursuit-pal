@@ -1,14 +1,18 @@
 ﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MockQueryable.NSubstitute;
 using NSubstitute;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Exceptions.OperationExceptions;
 using PursuitPal.Core.Exceptions.ValidationExceptions;
+using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Requests;
 using PursuitPal.Infrastructure.Entities;
 using PursuitPal.Services;
 using System.Linq.Expressions;
+using System.Reflection.Metadata;
 
 namespace PursuitPal.Tests.Services
 {
@@ -59,9 +63,9 @@ namespace PursuitPal.Tests.Services
         [Fact]
         public async Task GenerateUserToken_Handle_WhenUserIsNotFoundByEmail_ShouldThrowFailedAuthenticationException()
         {
-            await _usersRepository
-                .FindAsync(Arg.Is<Expression<Func<User, bool>>>(expr =>
-                    expr.Compile()(null)));
+            var mock = new List<User>().BuildMock();
+
+            _usersRepository.GetAll().Include(x => x.Roles).Returns(mock);
 
             var act = async () => await _sut.GenerateUserTokenAsync(TokenRequest);
 
@@ -71,11 +75,26 @@ namespace PursuitPal.Tests.Services
         [Fact]
         public async Task GenerateUserToken_Handle_WhenPasswordDoesNotMatch_ShouldThrowFailedAuthenticationException()
         {
-            var email = "test@test.com";
+            var pursuitPalHash = new PursuitPalHash();
 
-            await _usersRepository
-                .FindAsync(Arg.Is<Expression<Func<User, bool>>>(expr =>
-                    expr.Compile()(new User { Id = Guid.NewGuid(), Email = email })));
+            var users = new List<User>()
+            {
+                new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "test@test.com",
+                    Password = pursuitPalHash.HashPasword("test123", out byte[] salt),
+                    Salt = Convert.ToHexString(salt),
+                    Roles = new List<Role>
+                    {
+                        new Role { RoleName = "test" }
+                    }
+                },
+            };
+
+            var mock = users.BuildMock();
+
+            _usersRepository.GetAll().Include(x => x.Roles).Returns(mock);
 
             var act = async () => await _sut.GenerateUserTokenAsync(TokenRequest);
 

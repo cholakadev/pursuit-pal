@@ -41,7 +41,6 @@ namespace PursuitPal.Services
             var goalStatuses = request.Statuses.Select(x => x.ToStringStatus());
 
             return await _goalsRepository.GetAll()
-                .AsNoTracking()
                 .Include(x => x.Details)
                 .Where(x => x.UserId == userId &&
                             (!request.Statuses.Any() || goalStatuses.Contains(x.Status)) &&
