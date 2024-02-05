@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using PursuitPal.Core.Contracts.Repositories;
+using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Exceptions.OperationExceptions;
 using PursuitPal.Core.Exceptions.ValidationExceptions;
 using PursuitPal.Core.Requests;
@@ -14,19 +15,24 @@ namespace PursuitPal.Tests.Services
     public class UsersServiceTests
     {
         private readonly UsersService _sut;
-        private readonly IRepository<User> _usersRepository;
         private readonly IConfiguration _configuration;
+        private readonly IRepository<User> _usersRepository;
+        private readonly IUsersContextService _usersContextService;
 
         public UsersServiceTests()
         {
-            _usersRepository = Substitute.For<IRepository<User>>();
             _configuration = Substitute.For<IConfiguration>();
+            _usersRepository = Substitute.For<IRepository<User>>();
+            _usersContextService  = Substitute.For<IUsersContextService>();
 
             _usersRepository
                 .AddAsync(Arg.Any<User>())
                 .Returns(new User { Id = Guid.NewGuid() });
 
-            _sut = new UsersService(_configuration, _usersRepository);
+            _sut = new UsersService(
+                _configuration,
+                _usersRepository,
+                _usersContextService);
         }
 
         [Fact]

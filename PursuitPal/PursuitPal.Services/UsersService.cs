@@ -16,13 +16,16 @@ namespace PursuitPal.Services
     {
         private readonly IConfiguration _configuration;
         private readonly IRepository<User> _usersRepository;
+        private readonly IUsersContextService _usersContextService;
 
         public UsersService(
             IConfiguration configuration,
-            IRepository<User> usersRepository)
+            IRepository<User> usersRepository,
+            IUsersContextService usersContextService)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
+            _usersContextService = usersContextService ?? throw new ArgumentNullException(nameof(usersContextService));
         }
 
         public async Task<UserTokenResponse> GenerateUserTokenAsync(GenerateUserTokenRequest request)
@@ -57,7 +60,12 @@ namespace PursuitPal.Services
                 .Where(x => request.UserIds.Contains(x.Id))
                 .ToListAsync();
 
-            usersToUpdate.ForEach(x => x.ReportsTo = request.ReportsToUserId);
+            
+            var reportsToId = request.ReportsToUserId.HasValue && _usersContextService.IsInRole("Admin")
+                ? request.ReportsToUserId.Value
+                : _usersContextService.UserId;
+
+            usersToUpdate.ForEach(x => x.ReportsTo = reportsToId);
 
             var updatedUsers = await _usersRepository.UpdateManyAsync(usersToUpdate);
 
