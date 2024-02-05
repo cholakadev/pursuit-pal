@@ -25,5 +25,7 @@
         public Department Department { get; set; }
 
         public IEnumerable<Goal> Goals { get; set; }
+
+        public IEnumerable<Role> Roles { get; set; }
     }
 }

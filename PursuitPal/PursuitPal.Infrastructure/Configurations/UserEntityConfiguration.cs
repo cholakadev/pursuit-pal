@@ -20,6 +20,10 @@ namespace PursuitPal.Infrastructure.Configurations
             builder.HasMany(x => x.Goals)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId);
+
+            builder.HasMany(x => x.Roles)
+                .WithMany(x => x.Users)
+                .UsingEntity(j => j.ToTable("UserRoles"));
         }
     }
 }

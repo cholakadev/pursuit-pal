@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Exceptions.OperationExceptions;
@@ -24,7 +25,9 @@ namespace PursuitPal.Services
 
         public async Task<UserTokenResponse> GenerateUserTokenAsync(GenerateUserTokenRequest request)
         {
-            var user = await _usersRepository.FindAsync(x => x.Email == request.Email);
+            var user = await _usersRepository.GetAll()
+                .Include(x => x.Roles)
+                .FirstOrDefaultAsync(x => x.Email == request.Email);
 
             if (user == null)
             {
