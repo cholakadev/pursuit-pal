@@ -18,6 +18,8 @@
 
         public string Position { get; set; }
 
+        public Guid? ReportsTo { get; set; }
+
         public int DepartmentId { get; set; }
 
         public Department Department { get; set; }
