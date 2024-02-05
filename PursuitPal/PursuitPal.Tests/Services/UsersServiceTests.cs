@@ -26,7 +26,7 @@ namespace PursuitPal.Tests.Services
                 .AddAsync(Arg.Any<User>())
                 .Returns(new User { Id = Guid.NewGuid() });
 
-            _sut = new UsersService(_usersRepository, _configuration);
+            _sut = new UsersService(_configuration, _usersRepository);
         }
 
         [Fact]

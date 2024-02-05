@@ -36,6 +36,13 @@ namespace PursuitPal.Infrastructure.Repositories
             return entity;
         }
 
+        public virtual async Task<ICollection<TEntity>> UpdateManyAsync(ICollection<TEntity> entities)
+        {
+            _context.Set<TEntity>().UpdateRange(entities);
+            await _context.SaveChangesAsync();
+            return entities;
+        }
+
         public virtual async Task<int> DeleteAsync(TEntity entity, bool isHard = false)
         {
             if (entity is IActivatable activatable && !isHard)

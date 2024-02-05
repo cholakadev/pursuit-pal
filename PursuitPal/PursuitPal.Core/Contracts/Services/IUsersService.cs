@@ -8,5 +8,7 @@ namespace PursuitPal.Core.Contracts.Services
         Task<Guid> RegisterUserAsync(CreateUpdateUserRequest request);
 
         Task<UserTokenResponse> GenerateUserTokenAsync(GenerateUserTokenRequest request);
+
+        Task<bool> ManageDirectReportsAsync(ManageDirectReportsRequest request);
     }
 }

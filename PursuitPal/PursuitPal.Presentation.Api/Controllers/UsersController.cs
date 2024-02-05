@@ -26,5 +26,10 @@ namespace PursuitPal.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Login([FromBody] GenerateUserTokenRequest request)
             => Ok(await _usersService.GenerateUserTokenAsync(request));
+
+        [HttpPost("direct-reports"), Authorize(Roles = "Lead,Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ManageDirectReports([FromBody] ManageDirectReportsRequest request)
+            => Ok(await _usersService.ManageDirectReportsAsync(request));
     }
 }
