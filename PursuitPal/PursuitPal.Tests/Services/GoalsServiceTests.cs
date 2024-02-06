@@ -62,7 +62,7 @@ namespace PursuitPal.Tests.Services
         }
 
         [Fact]
-        public async Task UpdateGoal_Handle_WhenGoalIsNotCreatedSuccessfuly_ShouldThrowFailedCreationException()
+        public async Task UpdateGoal_Handle_WhenGoalIsNotFoundForTheUser_ShouldThrowNotFoundException()
         {
             var goals = new List<Goal>()
             {
@@ -81,7 +81,6 @@ namespace PursuitPal.Tests.Services
             };
 
             var mock = goals.BuildMock();
-
             _goalsRepository.GetAll().Include(x => x.Details).Returns(mock);
 
             var act = async () => await _sut.UpdateGoalAsync(UpdateGoalRequest);
