@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MockQueryable.NSubstitute;
@@ -12,8 +11,6 @@ using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Requests;
 using PursuitPal.Infrastructure.Entities;
 using PursuitPal.Services;
-using System.Linq.Expressions;
-using System.Reflection.Metadata;
 
 namespace PursuitPal.Tests.Services
 {
@@ -58,7 +55,7 @@ namespace PursuitPal.Tests.Services
 
             var act = async () => await _sut.RegisterUserAsync(CreateUpdateRequest);
 
-            await act.Should().ThrowAsync<FailedCreationException>();
+            await act.Should().ThrowAsync<CreateUpdateFailedException>();
         }
 
         [Fact]

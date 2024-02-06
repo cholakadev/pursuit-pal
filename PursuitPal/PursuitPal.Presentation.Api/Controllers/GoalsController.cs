@@ -19,14 +19,14 @@ namespace PursuitPal.Presentation.Api.Controllers
 
         [HttpPost, Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> CreateGoal([FromBody] CreateUpdateGoalRequest request)
+        public async Task<IActionResult> CreateGoal([FromBody] CreateGoalRequest request)
             => CreatedAtAction(nameof(CreateGoal), await _goalsService.CreateGoalAsync(request));
 
         [HttpPut, Authorize]
-        public async Task<IActionResult> UpdateGoal([FromBody] object goal)
-        {
-            throw new NotImplementedException();
-        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateGoal([FromBody] UpdateGoalRequest request)
+            => Ok(await _goalsService.UpdateGoalAsync(request));
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGoalById([FromQuery] Guid id)

@@ -10,7 +10,7 @@ namespace PusuitPal.Architecture.Tests
     public class ProjectTypesFixture
     {
         public Types AllTypes;
-        public static Assembly PursuitPalCoreAssembly = typeof(CreateUpdateGoalRequest).Assembly;
+        public static Assembly PursuitPalCoreAssembly = typeof(CreateGoalRequest).Assembly;
         public static Assembly PursuitPalInfrastructureAssembly = typeof(Goal).Assembly;
         public static Assembly PursuitPalPresentationApiAssembly = typeof(GoalsController).Assembly;
         public static Assembly PursuitPalServicesAssembly = typeof(GoalsService).Assembly;
