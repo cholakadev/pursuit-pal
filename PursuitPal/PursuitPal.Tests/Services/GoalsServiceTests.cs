@@ -1,8 +1,11 @@
 ﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using MockQueryable.NSubstitute;
 using NSubstitute;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Exceptions.OperationExceptions;
+using PursuitPal.Core.Exceptions.ValidationExceptions;
 using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Requests;
 using PursuitPal.Infrastructure.Entities;
@@ -59,15 +62,31 @@ namespace PursuitPal.Tests.Services
         }
 
         [Fact]
-        public async Task GetAllGoals_Handle_WhenGoalIsNotCreatedSuccessfuly_ShouldThrowFailedCreationException()
+        public async Task UpdateGoal_Handle_WhenGoalIsNotCreatedSuccessfuly_ShouldThrowFailedCreationException()
         {
-            _goalsRepository
-                .AddAsync(Arg.Any<Goal>())
-                .Returns(default(Goal));
+            var goals = new List<Goal>()
+            {
+                new Goal
+                {
+                    Id = Guid.NewGuid(),
+                    FromDate = DateTime.Now,
+                    ToDate = DateTime.Now,
+                    Details = new GoalDetails
+                    {
+                        Name = "test",
+                        Description = "test",
+                        CompletionCriteria = "test",
+                    },
+                },
+            };
 
-            var act = async () => await _sut.CreateGoalAsync(CreateGoalRequest);
+            var mock = goals.BuildMock();
 
-            await act.Should().ThrowAsync<CreateUpdateFailedException>();
+            _goalsRepository.GetAll().Include(x => x.Details).Returns(mock);
+
+            var act = async () => await _sut.UpdateGoalAsync(UpdateGoalRequest);
+
+            await act.Should().ThrowAsync<KeyNotFoundException>();
         }
 
         private CreateGoalRequest CreateGoalRequest => new CreateGoalRequest
@@ -80,11 +99,15 @@ namespace PursuitPal.Tests.Services
             Status = GoalStatus.Active,
         };
 
-        private GetGoalsRequest GetGoalsRequest => new GetGoalsRequest
+        private UpdateGoalRequest UpdateGoalRequest => new UpdateGoalRequest
         {
+            Id = Guid.NewGuid(),
+            Name = "name",
             FromDate = DateTime.UtcNow,
             ToDate = DateTime.UtcNow,
-            Statuses = new List<GoalStatus>(),
+            Description = "description",
+            CompletionCriteria = "completionCriteria",
+            Status = GoalStatus.Active,
         };
     }
 }
