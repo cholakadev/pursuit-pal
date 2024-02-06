@@ -32,7 +32,7 @@ namespace PursuitPal.Services.Factories
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
                 Email = entity.Email,
-                Roles = entity.Roles
+                Roles = entity.Roles?
                     .Select(x => x.RoleName)
                     .ToList(),
             };

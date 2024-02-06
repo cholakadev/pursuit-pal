@@ -33,6 +33,7 @@ namespace PursuitPal.Presentation.Api.Middlewares
                 response.StatusCode = (int?)errorStatusCode ?? error switch
                 {
                     KeyNotFoundException => (int)HttpStatusCode.NotFound,
+                    FailedAuthenticationException => StatusCodes.Status401Unauthorized,
                     ValidationException => (int)HttpStatusCode.BadRequest,
                     BaseException => (int)HttpStatusCode.InternalServerError,
                     _ => (int)HttpStatusCode.InternalServerError, // unhandled error

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PursuitPal.Core.Contracts.Services;
+using System.Security.Claims;
 
 namespace PursuitPal.Services
 {
@@ -16,5 +17,12 @@ namespace PursuitPal.Services
             _context?.User?.Claims.SingleOrDefault(x => x.Type == "Id")?.Value,out var parsedGuid)
                 ? parsedGuid
                 : Guid.Empty;
+
+        public IEnumerable<string>? Roles => _context?.User?.Claims
+            .Where(x => x.Type == ClaimTypes.Role)
+            .Select(x => x.Value);
+
+        public bool IsInRole(string role)
+            => Roles?.Any(r => r.Contains(role)) == true;
     }
 }

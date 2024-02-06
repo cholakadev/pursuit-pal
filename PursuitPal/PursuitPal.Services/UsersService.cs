@@ -14,13 +14,18 @@ namespace PursuitPal.Services
 {
     public class UsersService : IUsersService
     {
-        private readonly IRepository<User> _usersRepository;
         private readonly IConfiguration _configuration;
+        private readonly IRepository<User> _usersRepository;
+        private readonly IUsersContextService _usersContextService;
 
-        public UsersService(IRepository<User> usersRepository, IConfiguration configuration)
+        public UsersService(
+            IConfiguration configuration,
+            IRepository<User> usersRepository,
+            IUsersContextService usersContextService)
         {
-            _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
+            _usersContextService = usersContextService ?? throw new ArgumentNullException(nameof(usersContextService));
         }
 
         public async Task<UserTokenResponse> GenerateUserTokenAsync(GenerateUserTokenRequest request)
@@ -47,6 +52,24 @@ namespace PursuitPal.Services
             var token = jwtGenerator.GenerateToken(user.ToModel());
 
             return new UserTokenResponse { Token = token };
+        }
+
+        public async Task<bool> ManageDirectReportsAsync(ManageDirectReportsRequest request)
+        {
+            var usersToUpdate = await _usersRepository.GetAll()
+                .Where(x => request.UserIds.Contains(x.Id))
+                .ToListAsync();
+
+            
+            var reportsToId = request.ReportsToUserId.HasValue && _usersContextService.IsInRole("Admin")
+                ? request.ReportsToUserId.Value
+                : _usersContextService.UserId;
+
+            usersToUpdate.ForEach(x => x.ReportsTo = reportsToId);
+
+            var updatedUsers = await _usersRepository.UpdateManyAsync(usersToUpdate);
+
+            return updatedUsers.Any();
         }
 
         public async Task<Guid> RegisterUserAsync(CreateUpdateUserRequest request)
