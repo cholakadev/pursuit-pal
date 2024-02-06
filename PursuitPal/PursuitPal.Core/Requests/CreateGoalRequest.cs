@@ -2,7 +2,7 @@
 
 namespace PursuitPal.Core.Requests
 {
-    public class CreateUpdateGoalRequest
+    public class CreateGoalRequest
     {
         public string Name { get; set; }
 

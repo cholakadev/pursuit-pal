@@ -4,19 +4,19 @@ using PursuitPal.Presentation.Api.Validators;
 
 namespace PursuitPal.Tests.Validators
 {
-    public class CreateUpdateGoalRequestValidatorTests
+    public class CreateGoalRequestValidatorTests
     {
-        private readonly CreateUpdateGoalRequestValidator _validator;
+        private readonly CreateGoalRequestValidator _validator;
 
-        public CreateUpdateGoalRequestValidatorTests()
+        public CreateGoalRequestValidatorTests()
         {
-            _validator = new CreateUpdateGoalRequestValidator();
+            _validator = new CreateGoalRequestValidator();
         }
 
         [Fact]
         public void Handle_WhenRequestIsValid_ShouldNotHaveValidationError()
         {
-            var request = new CreateUpdateGoalRequest
+            var request = new CreateGoalRequest
             {
                 FromDate = DateTime.Now,
                 ToDate = DateTime.Now.AddDays(20),
@@ -33,7 +33,7 @@ namespace PursuitPal.Tests.Validators
         [Fact]
         public void Handle_WhenFromDateIsInvalid_ShouldHaveValidationError()
         {
-            var request = new CreateUpdateGoalRequest
+            var request = new CreateGoalRequest
             {
                 ToDate = DateTime.Now.AddDays(20),
                 Name = "test",
@@ -49,7 +49,7 @@ namespace PursuitPal.Tests.Validators
         [Fact]
         public void Handle_WhenToDateIsInvalid_ShouldHaveValidationError()
         {
-            var request = new CreateUpdateGoalRequest
+            var request = new CreateGoalRequest
             {
                 FromDate = DateTime.Now,
                 Name = "test",
@@ -65,7 +65,7 @@ namespace PursuitPal.Tests.Validators
         [Fact]
         public void Handle_WhenNameIsInvalid_ShouldHaveValidationError()
         {
-            var request = new CreateUpdateGoalRequest
+            var request = new CreateGoalRequest
             {
                 FromDate = DateTime.Now,
                 ToDate = DateTime.Now.AddDays(20),
@@ -81,7 +81,7 @@ namespace PursuitPal.Tests.Validators
         [Fact]
         public void Handle_WhenDescriptionIsInvalid_ShouldHaveValidationError()
         {
-            var request = new CreateUpdateGoalRequest
+            var request = new CreateGoalRequest
             {
                 FromDate = DateTime.Now,
                 ToDate = DateTime.Now.AddDays(20),
@@ -97,7 +97,7 @@ namespace PursuitPal.Tests.Validators
         [Fact]
         public void Handle_WhenCompletionCriteriaIsInvalid_ShouldHaveValidationError()
         {
-            var request = new CreateUpdateGoalRequest
+            var request = new CreateGoalRequest
             {
                 FromDate = DateTime.Now,
                 ToDate = DateTime.Now.AddDays(20),

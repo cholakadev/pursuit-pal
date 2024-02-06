@@ -58,7 +58,7 @@ namespace PursuitPal.Tests.Services
 
             var act = async () => await _sut.RegisterUserAsync(CreateUpdateRequest);
 
-            await act.Should().ThrowAsync<FailedCreationException>();
+            await act.Should().ThrowAsync<CreateUpdateFailedException>();
         }
 
         [Fact]

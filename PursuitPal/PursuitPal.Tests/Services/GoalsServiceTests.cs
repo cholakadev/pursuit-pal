@@ -44,15 +44,15 @@ namespace PursuitPal.Tests.Services
                 .AddAsync(Arg.Any<Goal>())
                 .Returns(default(Goal));
 
-            var act = async () => await _sut.CreateGoalAsync(CreateUpdateRequest);
+            var act = async () => await _sut.CreateGoalAsync(CreateGoalRequest);
 
-            await act.Should().ThrowAsync<FailedCreationException>();
+            await act.Should().ThrowAsync<CreateUpdateFailedException>();
         }
 
         [Fact]
         public async Task CreateGoal_Handle_WhenGoalIsCreatedSuccessfuly_ShouldNotThrowFailedCreationException()
         {
-            var act = async () => await _sut.CreateGoalAsync(CreateUpdateRequest);
+            var act = async () => await _sut.CreateGoalAsync(CreateGoalRequest);
 
             await act.Should().NotThrowAsync();
             await _goalsRepository.Received().AddAsync(Arg.Any<Goal>());
@@ -65,12 +65,12 @@ namespace PursuitPal.Tests.Services
                 .AddAsync(Arg.Any<Goal>())
                 .Returns(default(Goal));
 
-            var act = async () => await _sut.CreateGoalAsync(CreateUpdateRequest);
+            var act = async () => await _sut.CreateGoalAsync(CreateGoalRequest);
 
-            await act.Should().ThrowAsync<FailedCreationException>();
+            await act.Should().ThrowAsync<CreateUpdateFailedException>();
         }
 
-        private CreateUpdateGoalRequest CreateUpdateRequest => new CreateUpdateGoalRequest
+        private CreateGoalRequest CreateGoalRequest => new CreateGoalRequest
         {
             Name = "name",
             Description = "description",

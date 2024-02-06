@@ -84,7 +84,7 @@ namespace PursuitPal.Services
 
             if (createdUser is null)
             {
-                throw new FailedCreationException(nameof(RegisterUserAsync));
+                throw new CreateUpdateFailedException(nameof(RegisterUserAsync));
             }
 
             return createdUser.Id;

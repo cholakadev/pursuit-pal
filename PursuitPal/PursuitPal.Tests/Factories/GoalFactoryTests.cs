@@ -10,7 +10,7 @@ namespace PursuitPal.Tests.Factories
     public class GoalFactoryTests
     {
         private readonly Goal _goal;
-        private readonly CreateUpdateGoalRequest _createUpdateGoalRequest;
+        private readonly CreateGoalRequest _createUpdateGoalRequest;
 
         public GoalFactoryTests()
         {
@@ -27,7 +27,7 @@ namespace PursuitPal.Tests.Factories
                 }
             };
 
-            _createUpdateGoalRequest = new CreateUpdateGoalRequest
+            _createUpdateGoalRequest = new CreateGoalRequest
             {
                 Name = "name",
                 Description = "description",
@@ -54,7 +54,7 @@ namespace PursuitPal.Tests.Factories
         [Fact]
         public void Handle_WhenConvertingNullRequestToEntity_ShouldThrowException()
         {
-            CreateUpdateGoalRequest? request = null;
+            CreateGoalRequest? request = null;
             Assert.Throws<ArgumentNullException>(() => request.ToEntity(Guid.NewGuid()));
         }
 

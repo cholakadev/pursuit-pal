@@ -2,9 +2,9 @@
 
 namespace PursuitPal.Presentation.Api.Validators
 {
-    public class CreateUpdateGoalRequestValidator : BaseValidator<CreateUpdateGoalRequest>
+    public class CreateGoalRequestValidator : BaseValidator<CreateGoalRequest>
     {
-        public CreateUpdateGoalRequestValidator()
+        public CreateGoalRequestValidator()
         {
             RuleFor(x => x.Name).ShouldNotBeEmpty();
             RuleFor(x => x.Description).ShouldNotBeEmpty();
