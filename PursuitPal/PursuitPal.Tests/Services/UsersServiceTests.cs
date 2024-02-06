@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Azure.Core;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MockQueryable.NSubstitute;
@@ -101,6 +102,98 @@ namespace PursuitPal.Tests.Services
             await act.Should().ThrowAsync<FailedAuthenticationException>();
         }
 
+        [Fact]
+        public async Task ManageDirectReports_Handle_WhenUserIsAdmin_ShouldSetReportsToDifferentThenTheCurrentUserId()
+        {
+            _usersContextService.IsInRole("Admin").Returns(true);
+
+            var pursuitPalHash = new PursuitPalHash();
+            var password = pursuitPalHash.HashPasword("test123", out byte[] salt);
+
+            var users = new List<User>()
+            {
+                new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "test@test.com",
+                    Password = password,
+                    Salt = Convert.ToHexString(salt),
+                    Roles = new List<Role>
+                    {
+                        new Role { RoleName = "test" }
+                    }
+                },
+                new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "test2@test.com",
+                    Password = password,
+                    Salt = Convert.ToHexString(salt),
+                    Roles = new List<Role>
+                    {
+                        new Role { RoleName = "test2" }
+                    }
+                },
+            };
+
+            var mock = users.BuildMock();
+
+            _usersRepository.GetAll().Include(x => x.Roles).Returns(mock);
+
+            _ = await _sut.ManageDirectReportsAsync(ManageDirectReportsRequest);
+
+            await _usersRepository.Received(1).UpdateManyAsync(
+                Arg.Is<ICollection<User>>(users =>
+                    users.All(user => user.ReportsTo == ManageDirectReportsRequest.ReportsToUserId)));
+        }
+
+        [Fact]
+        public async Task ManageDirectReports_Handle_WhenUserIsLead_ShouldSetReportsToEqualsToTheCurrentUserId()
+        {
+            var currentUserId = Guid.NewGuid();
+            _usersContextService.UserId.Returns(currentUserId);
+            _usersContextService.IsInRole("Admin").Returns(false);
+
+            var pursuitPalHash = new PursuitPalHash();
+            var password = pursuitPalHash.HashPasword("test123", out byte[] salt);
+
+            var users = new List<User>()
+            {
+                new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "test@test.com",
+                    Password = password,
+                    Salt = Convert.ToHexString(salt),
+                    Roles = new List<Role>
+                    {
+                        new Role { RoleName = "test" }
+                    }
+                },
+                new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "test2@test.com",
+                    Password = password,
+                    Salt = Convert.ToHexString(salt),
+                    Roles = new List<Role>
+                    {
+                        new Role { RoleName = "test2" }
+                    }
+                },
+            };
+
+            var mock = users.BuildMock();
+
+            _usersRepository.GetAll().Include(x => x.Roles).Returns(mock);
+
+            _ = await _sut.ManageDirectReportsAsync(ManageDirectReportsRequest);
+
+            await _usersRepository.Received(1).UpdateManyAsync(
+                Arg.Is<ICollection<User>>(users =>
+                    users.All(user => user.ReportsTo == currentUserId)));
+        }
+
         private CreateUpdateUserRequest CreateUpdateRequest => new CreateUpdateUserRequest
         {
             Email = "Test",
@@ -113,6 +206,12 @@ namespace PursuitPal.Tests.Services
         {
             Email = "test@test.com",
             Password = "test_password",
+        };
+
+        private ManageDirectReportsRequest ManageDirectReportsRequest => new ManageDirectReportsRequest
+        {
+            UserIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() },
+            ReportsToUserId = Guid.NewGuid()
         };
     }
 }
