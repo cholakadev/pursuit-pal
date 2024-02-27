@@ -1,10 +1,16 @@
 using PursuitPal.Presentation.Api.Extensions;
 using PursuitPal.Presentation.Api.Middlewares;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 builder.Services.AddCustomSwagger();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
