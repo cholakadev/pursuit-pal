@@ -10,5 +10,7 @@ namespace PursuitPal.Core.Contracts.Services
         Task<GoalResponse> UpdateGoalAsync(UpdateGoalRequest request);
 
         Task<IEnumerable<GoalResponse>> GetAllGoalsAsync(GetGoalsRequest request);
+
+        Task<GoalResponse?> GetGoalByIdAsync(Guid id);
     }
 }

@@ -5,7 +5,6 @@ using PursuitPal.Core.Requests;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ApiController, ApiVersion("1.0"), Route("api/v{version:apiVersion}/[controller]")]
     public class GoalsController : Controller
@@ -24,18 +23,23 @@ namespace PursuitPal.Presentation.Api.Controllers
 
         [HttpPut, Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateGoal([FromBody] UpdateGoalRequest request)
             => Ok(await _goalsService.UpdateGoalAsync(request));
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetGoalById([FromQuery] Guid id)
+        [HttpGet("{id}"), Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> GetGoalById(Guid id)
         {
-            throw new NotImplementedException();
+            var result = await _goalsService.GetGoalByIdAsync(id);
+
+            return result is null ? NoContent() : Ok(result);
         }
 
         [HttpGet, Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllGoals([FromQuery] GetGoalsRequest request)
         {
             var result = await _goalsService.GetAllGoalsAsync(request);

@@ -13,6 +13,7 @@ namespace PursuitPal.Infrastructure.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.CreatedAt).HasDefaultValue(DateTime.UtcNow);
             builder.Property(x => x.CreatedBy).HasDefaultValue(new Guid(ApplicationConstants.SystemGuid));
+            builder.Property(x => x.Active).HasDefaultValue(true);
             builder.HasMany(x => x.Users)
                 .WithMany(x => x.Roles)
                 .UsingEntity(j => j.ToTable("UserRoles"));
