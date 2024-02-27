@@ -17,13 +17,10 @@ namespace PursuitPal.Infrastructure.Configurations
             builder.Property(x => x.Salt).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Position).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Active).HasDefaultValue(true);
+            builder.Property(x => x.RoleId).IsRequired(false);
             builder.HasMany(x => x.Goals)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId);
-
-            builder.HasMany(x => x.Roles)
-                .WithMany(x => x.Users)
-                .UsingEntity(j => j.ToTable("UserRoles"));
         }
     }
 }

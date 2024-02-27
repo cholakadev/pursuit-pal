@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace PursuitPal.Core.Exceptions.OperationExceptions
+﻿namespace PursuitPal.Core.Exceptions.OperationExceptions
 {
     public class CreateUpdateFailedException : BaseException
     {

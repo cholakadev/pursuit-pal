@@ -24,8 +24,11 @@
 
         public Department Department { get; set; }
 
+        public int? RoleId { get; set; }
+
         public IEnumerable<Goal> Goals { get; set; }
 
-        public IEnumerable<Role> Roles { get; set; }
+        public Role Role { get; set; }
+
     }
 }

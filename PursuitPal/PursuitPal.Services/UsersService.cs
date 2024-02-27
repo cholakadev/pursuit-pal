@@ -31,7 +31,7 @@ namespace PursuitPal.Services
         public async Task<UserTokenResponse> GenerateUserTokenAsync(GenerateUserTokenRequest request)
         {
             var user = await _usersRepository.GetAll()
-                .Include(x => x.Roles)
+                .Include(x => x.Role)
                 .FirstOrDefaultAsync(x => x.Email == request.Email);
 
             if (user == null)
