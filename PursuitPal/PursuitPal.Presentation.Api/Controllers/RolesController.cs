@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PursuitPal.Core.Contracts.Services;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize(Roles = "Admin,SystemAdmin")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ApiController, ApiVersion("1.0"), Route("api/v{version:apiVersion}/[controller]")]
     public class RolesController : Controller
     {
+        private readonly IRolesService _rolesService;
+        public RolesController(IRolesService rolesService)
+        {
+            _rolesService = rolesService ?? throw new ArgumentNullException(nameof(rolesService));
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateRole(object request)
         {
@@ -16,10 +22,9 @@ namespace PursuitPal.Presentation.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRoles()
-        {
-            throw new NotImplementedException();
-        }
+            => Ok(await _rolesService.GetAllRolesAsync());
 
         [HttpPost("assign")]
         public async Task<IActionResult> AssignRole([FromBody] object request)
