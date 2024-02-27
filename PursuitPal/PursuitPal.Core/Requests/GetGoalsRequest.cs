@@ -4,7 +4,7 @@ namespace PursuitPal.Core.Requests
 {
     public class GetGoalsRequest
     {
-        public IEnumerable<GoalStatus> Statuses { get; set; }
+        public IEnumerable<GoalStatus> Statuses { get; set; } = Enum.GetValues(typeof(GoalStatus)).Cast<GoalStatus>().ToList();
 
         public DateTime FromDate { get; set; } = DateTime.UtcNow;
 

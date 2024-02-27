@@ -91,6 +91,7 @@ namespace PursuitPal.Presentation.Api.Extensions
         {
             services.AddSwaggerGen(options =>
             {
+                options.UseInlineDefinitionsForEnums();
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
 
                 options.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
