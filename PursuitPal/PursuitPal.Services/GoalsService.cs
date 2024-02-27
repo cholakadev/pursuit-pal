@@ -49,6 +49,22 @@ namespace PursuitPal.Services
                 .ToListAsync();
         }
 
+        public async Task<GoalResponse?> GetGoalByIdAsync(Guid id)
+        {
+            var userId = _usersContextService.UserId;
+
+            var goal = await _goalsRepository.GetAll()
+                .Include(x => x.Details)
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.Id == id);
+
+            if (goal is null)
+            {
+                return null;
+            }
+
+            return goal.ToResponse();
+        }
+
         public async Task<GoalResponse> UpdateGoalAsync(UpdateGoalRequest request)
         {
             var goal = await _goalsRepository.GetAll()
