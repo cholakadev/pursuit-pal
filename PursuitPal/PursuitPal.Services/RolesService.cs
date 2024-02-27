@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
-using PursuitPal.Core.Exceptions.OperationExceptions;
+using PursuitPal.Core.Exceptions.ValidationExceptions;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
 using PursuitPal.Infrastructure.Entities;
@@ -13,46 +13,45 @@ namespace PursuitPal.Services
     {
         private const string SYSADMIN_ROLE = "SystemAdmin";
         private readonly IRepository<Role> _rolesRepository;
+        private readonly IRepository<User> _usersRepository;
         private readonly IUsersContextService _usersContextService;
 
         public RolesService(
             IRepository<Role> rolesRepository,
+            IRepository<User> usersRepository,
             IUsersContextService usersContextService)
         {
             _rolesRepository = rolesRepository ?? throw new ArgumentNullException(nameof(rolesRepository));
+            _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
             _usersContextService = usersContextService ?? throw new ArgumentNullException(nameof(usersContextService));
         }
 
         public async Task<bool> AssignUserRoleAsync(AssignUserRoleRequest request)
         {
-            //var isCurrentUserSystemAdmin = _usersContextService.IsInRole(SYSADMIN_ROLE);
+            var isCurrentUserSystemAdmin = _usersContextService.IsInRole(SYSADMIN_ROLE);
 
-            //var role = await _rolesRepository.GetAll()
-            //    .FirstOrDefaultAsync(x => x.Id == request.RoleId);
+            var role = await _rolesRepository.GetAll()
+                .FirstOrDefaultAsync(x => x.Id == request.RoleId);
 
-            //if (role is not null &&
-            //    !isCurrentUserSystemAdmin &&
-            //    role.RoleName == SYSADMIN_ROLE)
-            //{
-            //    throw new InvalidRoleAssignmentException("Admin users does not have right to assign SystemAdmin roles.");
-            //}
+            if (role is not null &&
+                !isCurrentUserSystemAdmin &&
+                role.RoleName == SYSADMIN_ROLE)
+            {
+                throw new InvalidRoleAssignmentException("Admin users does not have permissions to assign SystemAdmin roles.");
+            }
 
-            //var userRoles = new List<UserRoles>();
+            var users = await _usersRepository.GetAll(true)
+                .Where(x => request.UserIds.Contains(x.Id))
+                .ToListAsync();
 
-            //foreach (var userId in request.UserIds)
-            //{
-            //    userRoles.Add(new UserRoles
-            //    {
-            //        RoleId = request.RoleId,
-            //        UserId = userId,
-            //    });
-            //}
+            foreach (var user in users)
+            {
+                user.RoleId = request.RoleId;
+            }
 
-            //// Needs to update user role if the user already has one
+            var updatedUsers = await _usersRepository.UpdateManyAsync(users);
 
-            //var createdUserRoles = await _userRolesRepository.UpdateManyAsync(userRoles);
-
-            return true;
+            return updatedUsers.Any();
         }
 
         public async Task<IEnumerable<RoleResponse>> GetAllRolesAsync()
