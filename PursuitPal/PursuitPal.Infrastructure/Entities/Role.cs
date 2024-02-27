@@ -7,7 +7,5 @@
         public string RoleName { get; set; }
 
         public bool Active { get; set; }
-
-        public IEnumerable<User> Users { get; set; }
     }
 }

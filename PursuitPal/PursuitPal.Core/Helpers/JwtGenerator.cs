@@ -26,9 +26,9 @@ namespace PursuitPal.Core.Helpers
                 new Claim("LName", user.LastName),
             };
 
-            if (user.Roles.Any())
+            if (user.Role is not null)
             {
-                user.Roles.ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
+                claims.Add(new Claim(ClaimTypes.Role, user.Role));
             }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(

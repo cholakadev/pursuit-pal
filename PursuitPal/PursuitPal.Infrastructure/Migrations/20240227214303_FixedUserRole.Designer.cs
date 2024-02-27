@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PursuitPal.Infrastructure;
 
@@ -11,9 +12,11 @@ using PursuitPal.Infrastructure;
 namespace PursuitPal.Infrastructure.Migrations
 {
     [DbContext(typeof(PursuitPalDbContext))]
-    partial class PursuitPalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240227214303_FixedUserRole")]
+    partial class FixedUserRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace PursuitPal.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 2, 27, 21, 45, 58, 92, DateTimeKind.Utc).AddTicks(1436));
+                        .HasDefaultValue(new DateTime(2024, 2, 27, 21, 43, 3, 206, DateTimeKind.Utc).AddTicks(1071));
 
                     b.Property<Guid>("CreatedBy")
                         .ValueGeneratedOnAdd()
@@ -349,7 +352,7 @@ namespace PursuitPal.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 2, 27, 21, 45, 58, 92, DateTimeKind.Utc).AddTicks(3318));
+                        .HasDefaultValue(new DateTime(2024, 2, 27, 21, 43, 3, 206, DateTimeKind.Utc).AddTicks(2633));
 
                     b.Property<Guid>("CreatedBy")
                         .ValueGeneratedOnAdd()
@@ -461,7 +464,7 @@ namespace PursuitPal.Infrastructure.Migrations
                     b.Property<Guid?>("ReportsTo")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("RoleId")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Salt")
@@ -530,7 +533,9 @@ namespace PursuitPal.Infrastructure.Migrations
 
                     b.HasOne("PursuitPal.Infrastructure.Entities.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Department");
 

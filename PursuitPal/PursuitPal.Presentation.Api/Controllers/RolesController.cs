@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PursuitPal.Core.Contracts.Services;
+using PursuitPal.Core.Requests;
 
 namespace PursuitPal.Presentation.Api.Controllers
 {
@@ -27,9 +28,7 @@ namespace PursuitPal.Presentation.Api.Controllers
             => Ok(await _rolesService.GetAllRolesAsync());
 
         [HttpPost("assign")]
-        public async Task<IActionResult> AssignRole([FromBody] object request)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IActionResult> AssignRole([FromBody] AssignUserRoleRequest request)
+            => Ok(await _rolesService.AssignUserRoleAsync(request));
     }
 }

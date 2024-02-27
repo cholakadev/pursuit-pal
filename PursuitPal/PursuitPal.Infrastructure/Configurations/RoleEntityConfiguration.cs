@@ -14,9 +14,6 @@ namespace PursuitPal.Infrastructure.Configurations
             builder.Property(x => x.CreatedAt).HasDefaultValue(DateTime.UtcNow);
             builder.Property(x => x.CreatedBy).HasDefaultValue(new Guid(ApplicationConstants.SystemGuid));
             builder.Property(x => x.Active).HasDefaultValue(true);
-            builder.HasMany(x => x.Users)
-                .WithMany(x => x.Roles)
-                .UsingEntity(j => j.ToTable("UserRoles"));
 
             builder.HasData(
                 new Role { Id = 1, RoleName = "SystemAdmin" },

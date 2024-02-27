@@ -63,7 +63,7 @@ namespace PursuitPal.Tests.Services
         {
             var mock = new List<User>().BuildMock();
 
-            _usersRepository.GetAll().Include(x => x.Roles).Returns(mock);
+            _usersRepository.GetAll().Include(x => x.Role).Returns(mock);
 
             var act = async () => await _sut.GenerateUserTokenAsync(TokenRequest);
 
@@ -83,16 +83,13 @@ namespace PursuitPal.Tests.Services
                     Email = "test@test.com",
                     Password = pursuitPalHash.HashPasword("test123", out byte[] salt),
                     Salt = Convert.ToHexString(salt),
-                    Roles = new List<Role>
-                    {
-                        new Role { RoleName = "test" }
-                    }
+                    Role = new Role { RoleName = "test" }
                 },
             };
 
             var mock = users.BuildMock();
 
-            _usersRepository.GetAll().Include(x => x.Roles).Returns(mock);
+            _usersRepository.GetAll().Include(x => x.Role).Returns(mock);
 
             var act = async () => await _sut.GenerateUserTokenAsync(TokenRequest);
 
@@ -115,10 +112,7 @@ namespace PursuitPal.Tests.Services
                     Email = "test@test.com",
                     Password = password,
                     Salt = Convert.ToHexString(salt),
-                    Roles = new List<Role>
-                    {
-                        new Role { RoleName = "test" }
-                    }
+                    Role = new Role { RoleName = "test" }
                 },
                 new User
                 {
@@ -126,16 +120,13 @@ namespace PursuitPal.Tests.Services
                     Email = "test2@test.com",
                     Password = password,
                     Salt = Convert.ToHexString(salt),
-                    Roles = new List<Role>
-                    {
-                        new Role { RoleName = "test2" }
-                    }
+                    Role = new Role { RoleName = "test2" }
                 },
             };
 
             var mock = users.BuildMock();
 
-            _usersRepository.GetAll().Include(x => x.Roles).Returns(mock);
+            _usersRepository.GetAll().Include(x => x.Role).Returns(mock);
 
             _ = await _sut.ManageDirectReportsAsync(ManageDirectReportsRequest);
 
@@ -162,10 +153,7 @@ namespace PursuitPal.Tests.Services
                     Email = "test@test.com",
                     Password = password,
                     Salt = Convert.ToHexString(salt),
-                    Roles = new List<Role>
-                    {
-                        new Role { RoleName = "test" }
-                    }
+                    Role = new Role { RoleName = "test" }
                 },
                 new User
                 {
@@ -173,16 +161,13 @@ namespace PursuitPal.Tests.Services
                     Email = "test2@test.com",
                     Password = password,
                     Salt = Convert.ToHexString(salt),
-                    Roles = new List<Role>
-                    {
-                        new Role { RoleName = "test2" }
-                    }
+                    Role = new Role { RoleName = "test2" }
                 },
             };
 
             var mock = users.BuildMock();
 
-            _usersRepository.GetAll().Include(x => x.Roles).Returns(mock);
+            _usersRepository.GetAll().Include(x => x.Role).Returns(mock);
 
             _ = await _sut.ManageDirectReportsAsync(ManageDirectReportsRequest);
 
