@@ -58,10 +58,10 @@ namespace PursuitPal.Infrastructure.Repositories
             return await SaveChangesAsync();
         }
 
-        public virtual Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> match, bool tracking = false)
-            => tracking
+        public virtual async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> match, bool tracking = false)
+            => await (tracking
                 ? _context.Set<TEntity>().SingleOrDefaultAsync(match)
-                : _context.Set<TEntity>().AsNoTracking().SingleOrDefaultAsync(match);
+                : _context.Set<TEntity>().AsNoTracking().SingleOrDefaultAsync(match));
 
         public virtual IQueryable<TEntity> GetAll(bool tracking = false)
             => tracking ? _context.Set<TEntity>() : _context.Set<TEntity>().AsNoTracking();

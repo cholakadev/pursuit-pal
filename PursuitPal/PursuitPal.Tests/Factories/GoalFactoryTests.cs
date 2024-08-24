@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using PursuitPal.Core.Helpers;
+using PursuitPal.Core.Enums;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
 using PursuitPal.Infrastructure.Entities;

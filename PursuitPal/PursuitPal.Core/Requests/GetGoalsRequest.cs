@@ -1,4 +1,4 @@
-﻿using PursuitPal.Core.Helpers;
+﻿using PursuitPal.Core.Enums;
 
 namespace PursuitPal.Core.Requests
 {

@@ -1,11 +1,11 @@
-﻿namespace PursuitPal.Core.Helpers
+﻿using PursuitPal.Core.Enums;
+
+namespace PursuitPal.Core.Helpers
 {
     public static class EnumToStringConverter
     {
         public static string ToStringStatus(this GoalStatus status)
-        {
-            return StatusToStringMap.TryGetValue(status, out var value) ? value : status.ToString();
-        }
+            => StatusToStringMap.TryGetValue(status, out var value) ? value : status.ToString();
 
         private static readonly Dictionary<GoalStatus, string> StatusToStringMap = new Dictionary<GoalStatus, string>
         {

@@ -28,9 +28,7 @@ namespace PursuitPal.Services
             var createdGoal = await _goalsRepository.AddAsync(goalToCreate);
 
             if (createdGoal is null)
-            {
                 throw new CreateUpdateFailedException(nameof(CreateGoalAsync));
-            }
 
             return createdGoal.ToResponse();
         }
@@ -58,9 +56,7 @@ namespace PursuitPal.Services
                 .FirstOrDefaultAsync(x => x.UserId == userId && x.Id == id);
 
             if (goal is null)
-            {
-                return null;
-            }
+                throw new KeyNotFoundException();
 
             return goal.ToResponse();
         }
@@ -72,9 +68,7 @@ namespace PursuitPal.Services
                 .FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == _usersContextService.UserId);
 
             if (goal is null)
-            {
                 throw new KeyNotFoundException();
-            }
 
             var goalToUpdate = goal
                 .HavingName(request.Name)
@@ -87,9 +81,7 @@ namespace PursuitPal.Services
             var updatedGoal = await _goalsRepository.UpdateAsync(goalToUpdate);
 
             if (updatedGoal is null)
-            {
                 throw new CreateUpdateFailedException(nameof(UpdateGoalAsync));
-            }
 
             return updatedGoal.ToResponse();
         }

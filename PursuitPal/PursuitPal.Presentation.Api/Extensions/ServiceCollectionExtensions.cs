@@ -78,10 +78,7 @@ namespace PursuitPal.Presentation.Api.Extensions
             ValidatorOptions.Global.DisplayNameResolver = (_, member, _)
                 => member != null ? member.Name.Replace(" ", string.Empty) : null;
 
-            services.AddFluentValidationAutoValidation(options =>
-            {
-                options.DisableDataAnnotationsValidation = true;
-            });
+            services.AddFluentValidationAutoValidation(options => { options.DisableDataAnnotationsValidation = true; });
 
             services.AddValidatorsFromAssemblyContaining<BaseValidator<object>>();
 

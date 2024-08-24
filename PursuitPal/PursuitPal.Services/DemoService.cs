@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
+using PursuitPal.Core.Enums;
 using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Requests;
 using PursuitPal.Infrastructure.Entities;
