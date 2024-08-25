@@ -1,4 +1,6 @@
-﻿namespace PursuitPal.Core.Models
+﻿using PursuitPal.Core.Enums;
+
+namespace PursuitPal.Core.Models
 {
     public class UserModel
     {
@@ -10,6 +12,6 @@
 
         public string Email { get; set; }
 
-        public string? Role { get; set; }
+        public UserRole? Role { get; set; }
     }
 }

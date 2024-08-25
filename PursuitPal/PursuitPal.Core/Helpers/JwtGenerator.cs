@@ -27,9 +27,7 @@ namespace PursuitPal.Core.Helpers
             };
 
             if (user.Role is not null)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, user.Role));
-            }
+                claims.Add(new Claim(ClaimTypes.Role, user.Role.ToString()));
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetSection("Secrets:JWT_Secret").Value));

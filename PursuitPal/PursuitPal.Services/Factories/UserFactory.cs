@@ -1,4 +1,5 @@
-﻿using PursuitPal.Core.Models;
+﻿using PursuitPal.Core.Enums;
+using PursuitPal.Core.Models;
 using PursuitPal.Core.Requests;
 using PursuitPal.Infrastructure.Entities;
 
@@ -32,7 +33,7 @@ namespace PursuitPal.Services.Factories
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
                 Email = entity.Email,
-                Role = entity.Role?.RoleName
+                Role = (UserRole)Enum.Parse(typeof(UserRole), entity.Role!.RoleName),
             };
     }
 }

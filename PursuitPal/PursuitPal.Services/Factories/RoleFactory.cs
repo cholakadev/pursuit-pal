@@ -11,7 +11,7 @@ namespace PursuitPal.Services.Factories
             : new RoleResponse
             {
                 Id = entity.Id,
-                Name = entity.RoleName,
+                Name = entity.RoleName.ToString(),
             };
     }
 }

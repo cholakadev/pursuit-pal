@@ -1,11 +1,13 @@
-﻿namespace PursuitPal.Core.Contracts.Services
+﻿using PursuitPal.Core.Enums;
+
+namespace PursuitPal.Core.Contracts.Services
 {
     public interface IUsersContextService
     {
         Guid UserId { get; }
 
-        IEnumerable<string>? Roles { get; }
+        IEnumerable<UserRole>? Roles { get; }
 
-        bool IsInRole(string role);
+        bool IsInRole(UserRole role);
     }
 }

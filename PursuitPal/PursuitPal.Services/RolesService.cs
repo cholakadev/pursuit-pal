@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
+using PursuitPal.Core.Enums;
 using PursuitPal.Core.Exceptions.ValidationExceptions;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
@@ -11,7 +12,7 @@ namespace PursuitPal.Services
 {
     public class RolesService : IRolesService
     {
-        private const string SYSADMIN_ROLE = "SystemAdmin";
+        private const UserRole SYSADMIN_ROLE = UserRole.SystemAdmin;
         private readonly IRepository<Role> _rolesRepository;
         private readonly IRepository<User> _usersRepository;
         private readonly IUsersContextService _usersContextService;
@@ -35,7 +36,7 @@ namespace PursuitPal.Services
 
             if (role is not null &&
                 !isCurrentUserSystemAdmin &&
-                role.RoleName == SYSADMIN_ROLE)
+                role.RoleName == SYSADMIN_ROLE.ToString())
                 throw new InvalidRoleAssignmentException("Admin users does not have permissions to assign SystemAdmin roles.");
 
             var users = await _usersRepository.GetAll(true)

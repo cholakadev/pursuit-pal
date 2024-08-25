@@ -5,6 +5,7 @@ using MockQueryable.NSubstitute;
 using NSubstitute;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
+using PursuitPal.Core.Enums;
 using PursuitPal.Core.Exceptions.OperationExceptions;
 using PursuitPal.Core.Exceptions.ValidationExceptions;
 using PursuitPal.Core.Helpers;
@@ -83,7 +84,7 @@ namespace PursuitPal.Tests.Services
                     Email = "test@test.com",
                     Password = pursuitPalHash.HashPasword("test123", out byte[] salt),
                     Salt = Convert.ToHexString(salt),
-                    Role = new Role { RoleName = "test" }
+                    Role = new Role { RoleName = UserRole.Lead.ToString() }
                 },
             };
 
@@ -99,7 +100,7 @@ namespace PursuitPal.Tests.Services
         [Fact]
         public async Task ManageDirectReports_Handle_WhenUserIsAdmin_ShouldSetReportsToDifferentThenTheCurrentUserId()
         {
-            _usersContextService.IsInRole("Admin").Returns(true);
+            _usersContextService.IsInRole(UserRole.Admin).Returns(true);
 
             var pursuitPalHash = new PursuitPalHash();
             var password = pursuitPalHash.HashPasword("test123", out byte[] salt);
@@ -112,7 +113,7 @@ namespace PursuitPal.Tests.Services
                     Email = "test@test.com",
                     Password = password,
                     Salt = Convert.ToHexString(salt),
-                    Role = new Role { RoleName = "test" }
+                    Role = new Role { RoleName = UserRole.Lead.ToString() }
                 },
                 new User
                 {
@@ -120,7 +121,7 @@ namespace PursuitPal.Tests.Services
                     Email = "test2@test.com",
                     Password = password,
                     Salt = Convert.ToHexString(salt),
-                    Role = new Role { RoleName = "test2" }
+                    Role = new Role { RoleName = UserRole.Lead.ToString() }
                 },
             };
 
@@ -140,7 +141,7 @@ namespace PursuitPal.Tests.Services
         {
             var currentUserId = Guid.NewGuid();
             _usersContextService.UserId.Returns(currentUserId);
-            _usersContextService.IsInRole("Admin").Returns(false);
+            _usersContextService.IsInRole(UserRole.Admin).Returns(false);
 
             var pursuitPalHash = new PursuitPalHash();
             var password = pursuitPalHash.HashPasword("test123", out byte[] salt);
@@ -153,7 +154,7 @@ namespace PursuitPal.Tests.Services
                     Email = "test@test.com",
                     Password = password,
                     Salt = Convert.ToHexString(salt),
-                    Role = new Role { RoleName = "test" }
+                    Role = new Role { RoleName = UserRole.Lead.ToString() }
                 },
                 new User
                 {
@@ -161,7 +162,7 @@ namespace PursuitPal.Tests.Services
                     Email = "test2@test.com",
                     Password = password,
                     Salt = Convert.ToHexString(salt),
-                    Role = new Role { RoleName = "test2" }
+                    Role = new Role { RoleName = UserRole.Lead.ToString() }
                 },
             };
 

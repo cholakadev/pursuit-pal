@@ -1,8 +1,9 @@
 ﻿using PursuitPal.Core.Enums;
+using System.Runtime.Serialization;
 
 namespace PursuitPal.Core.Helpers
 {
-    public static class EnumToStringConverter
+    public static class EnumHelper
     {
         public static string ToStringStatus(this GoalStatus status)
             => StatusToStringMap.TryGetValue(status, out var value) ? value : status.ToString();
