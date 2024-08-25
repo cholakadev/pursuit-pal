@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
+using PursuitPal.Core.Enums;
 using PursuitPal.Core.Exceptions.OperationExceptions;
 using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Requests;
@@ -36,10 +37,20 @@ namespace PursuitPal.Services
         public async Task<IEnumerable<GoalResponse>> GetAllGoalsAsync(GetGoalsRequest request)
         {
             var currentQuarterEndDate = DateTime.UtcNow;
+            var userId = _usersContextService.UserId;
+
+            var currentUserRoles = _usersContextService.Roles;
+            var userChildRoles = GetAllChildRolesByHierarchy(currentUserRoles!.ToList());
+
+            if (request.UserId.HasValue && !userChildRoles.Any())
+                throw new UnauthorizedAccessException();
+
+            if (request.UserId.HasValue && userChildRoles.Any())
+                userId = request.UserId!.Value;
 
             var query = _goalsRepository.GetAll()
                 .Include(x => x.Details)
-                .Where(x => x.UserId == _usersContextService.UserId &&
+                .Where(x => x.UserId == userId &&
                             (!request.Statuses.Any() || request.Statuses.Contains(x.Status)));
 
             if (request is { FromDate: null, ToDate: null })
@@ -52,7 +63,7 @@ namespace PursuitPal.Services
             else
             {
                 query = query.Where(x => (!request.FromDate.HasValue || x.ToDate >= request.FromDate) &&
-                                         (!request.ToDate.HasValue || x.ToDate <= request.ToDate));
+                                            (!request.ToDate.HasValue || x.ToDate <= request.ToDate));
             }
 
             return await query
@@ -97,6 +108,28 @@ namespace PursuitPal.Services
                 throw new CreateUpdateFailedException(nameof(UpdateGoalAsync));
 
             return updatedGoal.ToResponse();
+        }
+
+        private List<UserRole> GetAllChildRolesByHierarchy(List<UserRole> roles)
+        {
+            var childRoles = new List<UserRole>();
+
+            foreach (var role in roles)
+            {
+                var childRolesPerRole = role switch
+                {
+                    UserRole.Employee => new List<UserRole>(),
+                    UserRole.Lead => new List<UserRole> { UserRole.Employee },
+                    UserRole.Manager => new List<UserRole> { UserRole.Employee, UserRole.Lead },
+                    UserRole.Admin => new List<UserRole> { UserRole.Employee, UserRole.Lead, UserRole.Manager },
+                    UserRole.SystemAdmin => new List<UserRole> { UserRole.Employee, UserRole.Lead, UserRole.Manager, UserRole.Admin },
+                    _ => new List<UserRole> { UserRole.Employee } // Default case if none above match
+                };
+
+                childRoles.AddRange(childRolesPerRole);
+            }
+
+            return childRoles;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PursuitPal.Core.Contracts.Services;
+using PursuitPal.Core.Enums;
 using System.Security.Claims;
 
 namespace PursuitPal.Services
@@ -18,11 +19,11 @@ namespace PursuitPal.Services
                 ? parsedGuid
                 : Guid.Empty;
 
-        public IEnumerable<string>? Roles => _context?.User?.Claims
+        public IEnumerable<UserRole>? Roles => _context?.User?.Claims
             .Where(x => x.Type == ClaimTypes.Role)
-            .Select(x => x.Value);
+            .Select(x => (UserRole)Enum.Parse(typeof(UserRole), x.Value));
 
-        public bool IsInRole(string role)
-            => Roles?.Any(r => r.Contains(role)) == true;
+        public bool IsInRole(UserRole role)
+            => Roles?.Contains(role) == true;
     }
 }

@@ -19,6 +19,7 @@ namespace PursuitPal.Tests.Factories
                 FirstName = "Test",
                 LastName = "Test",
                 Email = "test",
+                Role = new Role { RoleName = "SystemAdmin" }
             };
 
             _createUpdateUserRequest = new CreateUpdateUserRequest

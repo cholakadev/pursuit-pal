@@ -10,6 +10,8 @@ namespace PursuitPal.Core.Requests
 
         public DateTime? ToDate { get; set; }
 
+        public Guid? UserId { get; set; }
+
         // TODO: Add order by filters
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
+using PursuitPal.Core.Enums;
 using PursuitPal.Core.Exceptions.OperationExceptions;
 using PursuitPal.Core.Exceptions.ValidationExceptions;
 using PursuitPal.Core.Helpers;
@@ -57,7 +58,7 @@ namespace PursuitPal.Services
                 .ToListAsync();
 
             
-            var reportsToId = request.ReportsToUserId.HasValue && _usersContextService.IsInRole("Admin")
+            var reportsToId = request.ReportsToUserId.HasValue && _usersContextService.IsInRole(UserRole.Admin)
                 ? request.ReportsToUserId.Value
                 : _usersContextService.UserId;
 
