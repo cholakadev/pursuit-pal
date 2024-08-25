@@ -8,8 +8,7 @@ namespace PursuitPal.Presentation.Api.Validators
         public GetGoalsRequestValidator()
         {
             RuleFor(x => x.Statuses)
-                .ShouldNotBeEmpty()
-                .IsInEnum();
+                .ShouldNotBeEmpty();
         }
     }
 }

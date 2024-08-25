@@ -2,6 +2,7 @@
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Exceptions.OperationExceptions;
+using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
 using PursuitPal.Infrastructure.Entities;
@@ -33,13 +34,31 @@ namespace PursuitPal.Services
         }
 
         public async Task<IEnumerable<GoalResponse>> GetAllGoalsAsync(GetGoalsRequest request)
-            => await _goalsRepository.GetAll()
+        {
+            var currentQuarterEndDate = DateTime.UtcNow;
+
+            var query = _goalsRepository.GetAll()
                 .Include(x => x.Details)
                 .Where(x => x.UserId == _usersContextService.UserId &&
-                            (!request.Statuses.Any() || request.Statuses.Contains(x.Status)) &&
-                            x.ToDate >= request.FromDate && x.ToDate <= request.ToDate)
-                .Select(x => x.ToResponse())
-                .ToListAsync();
+                            (!request.Statuses.Any() || request.Statuses.Contains(x.Status)));
+
+            if (request is { FromDate: null, ToDate: null })
+            {
+                var currentDate = DateTime.UtcNow;
+                currentQuarterEndDate = currentDate.GetQuarterEndDate();
+
+                query = query.Where(x => x.ToDate <= currentQuarterEndDate);
+            }
+            else
+            {
+                query = query.Where(x => (!request.FromDate.HasValue || x.ToDate >= request.FromDate) &&
+                                         (!request.ToDate.HasValue || x.ToDate <= request.ToDate));
+            }
+
+            return await query
+                    .Select(x => x.ToResponse())
+                    .ToListAsync();
+        }
 
         public async Task<GoalResponse?> GetGoalByIdAsync(Guid id)
         {
