@@ -16,7 +16,7 @@ namespace PursuitPal.Services.Factories
                 UserId = userId,
                 FromDate = request.FromDate,
                 ToDate = request.ToDate,
-                Status = request.Status.ToStringStatus(),
+                Status = request.Status,
                 Details = new GoalDetails
                 {
                     Name = request.Name,
@@ -53,7 +53,7 @@ namespace PursuitPal.Services.Factories
                 throw new ArgumentNullException(nameof(goal));
 
             if (status.HasValue)
-                goal.Status = status.Value.ToStringStatus();
+                goal.Status = status.Value;
 
             return goal;
         }
@@ -99,7 +99,7 @@ namespace PursuitPal.Services.Factories
                 Id = entity.Id,
                 FromDate = entity.FromDate,
                 ToDate = entity.ToDate,
-                Status = entity.Status,
+                Status = entity.Status.ToString(),
                 Name = entity.Details.Name,
                 Description = entity.Details.Description,
                 CompletionCriteria = entity.Details.CompletionCriteria

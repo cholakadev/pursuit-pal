@@ -45,9 +45,7 @@ namespace PursuitPal.Presentation.Api.Controllers
             var result = await _goalsService.GetAllGoalsAsync(request);
 
             if (result != null && result.Any())
-            {
                 return Ok(result);
-            }
 
             return NoContent();
         }

@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using PursuitPal.Core.Requests;
+﻿using PursuitPal.Core.Requests;
 
 namespace PursuitPal.Presentation.Api.Validators
 {

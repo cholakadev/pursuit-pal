@@ -18,7 +18,7 @@ namespace PursuitPal.Tests.Factories
             {
                 FromDate = DateTime.Now,
                 ToDate = DateTime.Now,
-                Status = "Active",
+                Status = GoalStatus.Active,
                 Details = new GoalDetails
                 {
                     Name = "name",

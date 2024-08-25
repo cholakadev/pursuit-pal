@@ -2,7 +2,6 @@
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Exceptions.OperationExceptions;
-using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
 using PursuitPal.Infrastructure.Entities;
@@ -34,18 +33,13 @@ namespace PursuitPal.Services
         }
 
         public async Task<IEnumerable<GoalResponse>> GetAllGoalsAsync(GetGoalsRequest request)
-        {
-            var userId = _usersContextService.UserId;
-            var goalStatuses = request.Statuses.Select(x => x.ToStringStatus());
-
-            return await _goalsRepository.GetAll()
+            => await _goalsRepository.GetAll()
                 .Include(x => x.Details)
-                .Where(x => x.UserId == userId &&
-                            (!request.Statuses.Any() || goalStatuses.Contains(x.Status)) &&
-                            x.FromDate >= request.FromDate && x.ToDate <= request.ToDate)
+                .Where(x => x.UserId == _usersContextService.UserId &&
+                            (!request.Statuses.Any() || request.Statuses.Contains(x.Status)) &&
+                            x.ToDate >= request.FromDate && x.ToDate <= request.ToDate)
                 .Select(x => x.ToResponse())
                 .ToListAsync();
-        }
 
         public async Task<GoalResponse?> GetGoalByIdAsync(Guid id)
         {
