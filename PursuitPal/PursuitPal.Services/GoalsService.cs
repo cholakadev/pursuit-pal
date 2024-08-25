@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
 using PursuitPal.Core.Enums;
@@ -37,7 +38,7 @@ namespace PursuitPal.Services
         public async Task<IEnumerable<GoalResponse>> GetAllGoalsAsync(GetGoalsRequest request)
         {
             var currentQuarterEndDate = DateTime.UtcNow;
-            var userId = _usersContextService.UserId;
+            var userIdFilter = _usersContextService.UserId;
 
             var currentUserRoles = _usersContextService.Roles;
             var userChildRoles = GetAllChildRolesByHierarchy(currentUserRoles!.ToList());
@@ -46,11 +47,11 @@ namespace PursuitPal.Services
                 throw new UnauthorizedAccessException();
 
             if (request.UserId.HasValue && userChildRoles.Any())
-                userId = request.UserId!.Value;
+                userIdFilter = request.UserId!.Value;
 
             var query = _goalsRepository.GetAll()
                 .Include(x => x.Details)
-                .Where(x => x.UserId == userId &&
+                .Where(x => x.UserId == userIdFilter &&
                             (!request.Statuses.Any() || request.Statuses.Contains(x.Status)));
 
             if (request is { FromDate: null, ToDate: null })
@@ -71,13 +72,22 @@ namespace PursuitPal.Services
                     .ToListAsync();
         }
 
-        public async Task<GoalResponse?> GetGoalByIdAsync(Guid id)
+        public async Task<GoalResponse?> GetGoalByIdAsync(Guid goalId, Guid? userId)
         {
-            var userId = _usersContextService.UserId;
+            var userIdFilter = _usersContextService.UserId;
+
+            var currentUserRoles = _usersContextService.Roles;
+            var userChildRoles = GetAllChildRolesByHierarchy(currentUserRoles!.ToList());
+
+            if (userId.HasValue && !userChildRoles.Any())
+                throw new UnauthorizedAccessException();
+
+            if (userId.HasValue && userChildRoles.Any())
+                userIdFilter = userId!.Value;
 
             var goal = await _goalsRepository.GetAll()
                 .Include(x => x.Details)
-                .FirstOrDefaultAsync(x => x.UserId == userId && x.Id == id);
+                .FirstOrDefaultAsync(x => x.UserId == userIdFilter && x.Id == goalId);
 
             if (goal is null)
                 throw new KeyNotFoundException();

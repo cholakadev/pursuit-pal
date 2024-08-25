@@ -29,11 +29,11 @@ namespace PursuitPal.Presentation.Api.Controllers
         [HttpGet("{id}"), Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetGoalById(Guid id)
+        public async Task<IActionResult> GetGoalById(Guid id, [FromQuery] Guid? userId)
         {
-            var result = await _goalsService.GetGoalByIdAsync(id);
+            var result = await _goalsService.GetGoalByIdAsync(id, userId);
 
-            return result is null ? NoContent() : Ok(result);
+            return result is null ? NotFound() : Ok(result);
         }
 
         [HttpGet, Authorize]
