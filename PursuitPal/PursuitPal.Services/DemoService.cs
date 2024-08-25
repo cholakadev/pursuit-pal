@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using PursuitPal.Core.Contracts.Repositories;
 using PursuitPal.Core.Contracts.Services;
+using PursuitPal.Core.Enums;
 using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Requests;
 using PursuitPal.Infrastructure.Entities;
@@ -79,7 +80,7 @@ namespace PursuitPal.Services
                         .RuleFor(x => x.UserId, f => createdUser.Id)
                         .RuleFor(x => x.FromDate, f => fromDate)
                         .RuleFor(x => x.ToDate, f => toDate)
-                        .RuleFor(x => x.Status, randomStatus.ToStringStatus());
+                        .RuleFor(x => x.Status, randomStatus);
 
                     var generatedGoals = goalFaker.Generate(1);
                     goals.Add(generatedGoals.First());

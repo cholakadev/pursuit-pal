@@ -35,18 +35,14 @@ namespace PursuitPal.Services
                 .FirstOrDefaultAsync(x => x.Email == request.Email);
 
             if (user == null)
-            {
                 throw new FailedAuthenticationException();
-            }
 
             var pursuitPalHash = new PursuitPalHash();
             var passwordMatch = pursuitPalHash
                 .VerifyPassword(request.Password, user.Password, user.Salt);
 
             if (!passwordMatch)
-            {
                 throw new FailedAuthenticationException();
-            }
 
             var jwtGenerator = new JwtGenerator(_configuration);
             var token = jwtGenerator.GenerateToken(user.ToModel());
@@ -83,9 +79,7 @@ namespace PursuitPal.Services
             var createdUser = await _usersRepository.AddAsync(userToCreate);
 
             if (createdUser is null)
-            {
                 throw new CreateUpdateFailedException(nameof(RegisterUserAsync));
-            }
 
             return createdUser.Id;
         }

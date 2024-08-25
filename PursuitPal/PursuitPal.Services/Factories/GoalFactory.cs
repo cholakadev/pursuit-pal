@@ -1,4 +1,5 @@
-﻿using PursuitPal.Core.Helpers;
+﻿using PursuitPal.Core.Enums;
+using PursuitPal.Core.Helpers;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
 using PursuitPal.Infrastructure.Entities;
@@ -15,7 +16,7 @@ namespace PursuitPal.Services.Factories
                 UserId = userId,
                 FromDate = request.FromDate,
                 ToDate = request.ToDate,
-                Status = request.Status.ToStringStatus(),
+                Status = request.Status,
                 Details = new GoalDetails
                 {
                     Name = request.Name,
@@ -30,9 +31,7 @@ namespace PursuitPal.Services.Factories
                 throw new ArgumentNullException(nameof(goal));
 
             if (date.HasValue)
-            {
                 goal.FromDate = date.Value;
-            }
 
             return goal;
         }
@@ -43,9 +42,7 @@ namespace PursuitPal.Services.Factories
                 throw new ArgumentNullException(nameof(goal));
 
             if (date.HasValue)
-            {
                 goal.ToDate = date.Value;
-            }
 
             return goal;
         }
@@ -56,9 +53,7 @@ namespace PursuitPal.Services.Factories
                 throw new ArgumentNullException(nameof(goal));
 
             if (status.HasValue)
-            {
-                goal.Status = status.Value.ToStringStatus();
-            }
+                goal.Status = status.Value;
 
             return goal;
         }
@@ -69,9 +64,7 @@ namespace PursuitPal.Services.Factories
                 throw new ArgumentNullException(nameof(goal));
 
             if (!string.IsNullOrEmpty(name))
-            {
                 goal.Details.Name = name;
-            }
 
             return goal;
         }
@@ -82,9 +75,7 @@ namespace PursuitPal.Services.Factories
                 throw new ArgumentNullException(nameof(goal));
 
             if (!string.IsNullOrEmpty(description))
-            {
                 goal.Details.Description = description;
-            }
 
             return goal;
         }
@@ -95,9 +86,7 @@ namespace PursuitPal.Services.Factories
                 throw new ArgumentNullException(nameof(goal));
 
             if (!string.IsNullOrEmpty(completionCriteria))
-            {
                 goal.Details.CompletionCriteria = completionCriteria;
-            }
 
             return goal;
         }
@@ -110,7 +99,7 @@ namespace PursuitPal.Services.Factories
                 Id = entity.Id,
                 FromDate = entity.FromDate,
                 ToDate = entity.ToDate,
-                Status = entity.Status,
+                Status = entity.Status.ToString(),
                 Name = entity.Details.Name,
                 Description = entity.Details.Description,
                 CompletionCriteria = entity.Details.CompletionCriteria

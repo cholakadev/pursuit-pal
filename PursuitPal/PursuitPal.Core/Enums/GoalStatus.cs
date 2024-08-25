@@ -1,4 +1,4 @@
-﻿namespace PursuitPal.Core.Helpers
+﻿namespace PursuitPal.Core.Enums
 {
     public enum GoalStatus
     {

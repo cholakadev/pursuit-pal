@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using PursuitPal.Core.Helpers;
+using PursuitPal.Core.Enums;
 using PursuitPal.Core.Requests;
 using PursuitPal.Core.Responses;
 using PursuitPal.Infrastructure.Entities;
@@ -18,7 +18,7 @@ namespace PursuitPal.Tests.Factories
             {
                 FromDate = DateTime.Now,
                 ToDate = DateTime.Now,
-                Status = "Active",
+                Status = GoalStatus.Active,
                 Details = new GoalDetails
                 {
                     Name = "name",

@@ -43,10 +43,7 @@ namespace PursuitPal.Presentation.Api.Middlewares
 
                 if (error is ValidationException e)
                 {
-                    var errorResponse = new ErrorResponse
-                    {
-                        ErrorMessage = e.Message,
-                    };
+                    var errorResponse = new ErrorResponse { ErrorMessage = e.Message };
 
                     await response.WriteAsync(JsonSerializer.Serialize(errorResponse));
                 }

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using PursuitPal.Core.Helpers;
-using System.Text.RegularExpressions;
 
 namespace PursuitPal.Presentation.Api.Validators
 {
@@ -17,5 +16,17 @@ namespace PursuitPal.Presentation.Api.Validators
             => ruleBuilder.Must((model, email)
                 => email.ToString() != null && PursuitPalEmailValidator.IsValidEmail(email.ToString()!))
             .WithMessage(InvalidZipCodeErrorMessage);
+
+        public static IRuleBuilderOptions<T, TEnum> MustBeValidEnumValue<T, TEnum>(
+        this IRuleBuilder<T, TEnum> ruleBuilder)
+        where TEnum : struct, Enum
+        {
+            return (IRuleBuilderOptions<T, TEnum>)ruleBuilder.Custom((value, context) => {
+                if (!Enum.IsDefined(typeof(TEnum), value))
+                {
+                    context.AddFailure("The {PropertyName} must be a valid value of " + typeof(TEnum).Name);
+                }
+            });
+        }
     }
 }

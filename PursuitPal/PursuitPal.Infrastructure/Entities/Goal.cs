@@ -1,4 +1,6 @@
-﻿namespace PursuitPal.Infrastructure.Entities
+﻿using PursuitPal.Core.Enums;
+
+namespace PursuitPal.Infrastructure.Entities
 {
     public class Goal : Auditable, IActivatable
     {
@@ -10,7 +12,7 @@
 
         public DateTime ToDate { get; set; }
 
-        public string Status { get; set; }
+        public GoalStatus Status { get; set; }
 
         public bool Active { get; set; }
 

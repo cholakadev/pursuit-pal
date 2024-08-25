@@ -36,9 +36,7 @@ namespace PursuitPal.Services
             if (role is not null &&
                 !isCurrentUserSystemAdmin &&
                 role.RoleName == SYSADMIN_ROLE)
-            {
                 throw new InvalidRoleAssignmentException("Admin users does not have permissions to assign SystemAdmin roles.");
-            }
 
             var users = await _usersRepository.GetAll(true)
                 .Where(x => request.UserIds.Contains(x.Id))

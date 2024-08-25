@@ -28,25 +28,36 @@ namespace PursuitPal.Services
             var createdGoal = await _goalsRepository.AddAsync(goalToCreate);
 
             if (createdGoal is null)
-            {
                 throw new CreateUpdateFailedException(nameof(CreateGoalAsync));
-            }
 
             return createdGoal.ToResponse();
         }
 
         public async Task<IEnumerable<GoalResponse>> GetAllGoalsAsync(GetGoalsRequest request)
         {
-            var userId = _usersContextService.UserId;
-            var goalStatuses = request.Statuses.Select(x => x.ToStringStatus());
+            var currentQuarterEndDate = DateTime.UtcNow;
 
-            return await _goalsRepository.GetAll()
+            var query = _goalsRepository.GetAll()
                 .Include(x => x.Details)
-                .Where(x => x.UserId == userId &&
-                            (!request.Statuses.Any() || goalStatuses.Contains(x.Status)) &&
-                            x.FromDate >= request.FromDate && x.ToDate <= request.ToDate)
-                .Select(x => x.ToResponse())
-                .ToListAsync();
+                .Where(x => x.UserId == _usersContextService.UserId &&
+                            (!request.Statuses.Any() || request.Statuses.Contains(x.Status)));
+
+            if (request is { FromDate: null, ToDate: null })
+            {
+                var currentDate = DateTime.UtcNow;
+                currentQuarterEndDate = currentDate.GetQuarterEndDate();
+
+                query = query.Where(x => x.ToDate <= currentQuarterEndDate);
+            }
+            else
+            {
+                query = query.Where(x => (!request.FromDate.HasValue || x.ToDate >= request.FromDate) &&
+                                         (!request.ToDate.HasValue || x.ToDate <= request.ToDate));
+            }
+
+            return await query
+                    .Select(x => x.ToResponse())
+                    .ToListAsync();
         }
 
         public async Task<GoalResponse?> GetGoalByIdAsync(Guid id)
@@ -58,9 +69,7 @@ namespace PursuitPal.Services
                 .FirstOrDefaultAsync(x => x.UserId == userId && x.Id == id);
 
             if (goal is null)
-            {
-                return null;
-            }
+                throw new KeyNotFoundException();
 
             return goal.ToResponse();
         }
@@ -72,9 +81,7 @@ namespace PursuitPal.Services
                 .FirstOrDefaultAsync(x => x.Id == request.Id && x.UserId == _usersContextService.UserId);
 
             if (goal is null)
-            {
                 throw new KeyNotFoundException();
-            }
 
             var goalToUpdate = goal
                 .HavingName(request.Name)
@@ -87,9 +94,7 @@ namespace PursuitPal.Services
             var updatedGoal = await _goalsRepository.UpdateAsync(goalToUpdate);
 
             if (updatedGoal is null)
-            {
                 throw new CreateUpdateFailedException(nameof(UpdateGoalAsync));
-            }
 
             return updatedGoal.ToResponse();
         }
