@@ -10,7 +10,8 @@ namespace PursuitPal.Services.Factories
         public static User ToEntity(
             this CreateUpdateUserRequest request,
             string? password,
-            string? salt)
+            string? salt,
+            int roleId)
             => request is null
             ? throw new ArgumentNullException(nameof(request))
             : new User
@@ -20,6 +21,7 @@ namespace PursuitPal.Services.Factories
                 Email = request.Email,
                 Position = request.Position,
                 DepartmentId = request.DepartmentId,
+                RoleId = roleId,
                 Password = password ?? throw new ArgumentNullException(nameof(password)),
                 Salt = salt ?? throw new ArgumentNullException(nameof(salt)),
             };

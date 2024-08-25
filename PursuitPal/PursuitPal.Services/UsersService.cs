@@ -18,15 +18,18 @@ namespace PursuitPal.Services
         private readonly IConfiguration _configuration;
         private readonly IRepository<User> _usersRepository;
         private readonly IUsersContextService _usersContextService;
+        private readonly IRepository<Role> _roleRepository;
 
         public UsersService(
             IConfiguration configuration,
             IRepository<User> usersRepository,
-            IUsersContextService usersContextService)
+            IUsersContextService usersContextService,
+            IRepository<Role> roleRepository)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
             _usersContextService = usersContextService ?? throw new ArgumentNullException(nameof(usersContextService));
+            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         }
 
         public async Task<UserTokenResponse> GenerateUserTokenAsync(GenerateUserTokenRequest request)
@@ -75,7 +78,10 @@ namespace PursuitPal.Services
             var passwordHash = pursuitPalHash.HashPasword(request.Password, out var salt);
             var hexStringSalt = Convert.ToHexString(salt);
 
-            var userToCreate = request.ToEntity(passwordHash, hexStringSalt);
+            var defaultRole = _roleRepository.GetAll()
+                .FirstOrDefault(x => x.RoleName == UserRole.Employee.ToString());
+
+            var userToCreate = request.ToEntity(passwordHash, hexStringSalt, defaultRole!.Id);
 
             var createdUser = await _usersRepository.AddAsync(userToCreate);
 
